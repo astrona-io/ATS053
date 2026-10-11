@@ -1,8 +1,9 @@
-# Preparation scaffold. Technical pages stay draft until authoring and review.
+# Reading-only content; YAML knowledge checks have a separate index.
 training:
   id: ATS053
   title: 'CCA: Network Policy'
-  description: Preparation scaffold for Network Policy. Lessons and environments are planned.
+  description: 'Detailed reading material and reusable YAML knowledge checks for CCA: Network Policy.
+    Technical content remains draft. No labs or playgrounds.'
   certification:
     name: Cilium Certified Associate
     code: CCA
@@ -18,7 +19,7 @@ training:
 modules:
 - id: module-intro
   title: Introduction
-  description: Planned introduction and authoring status.
+  description: Audience, reading method and review process.
   content:
   - type: reading
     title: Introduction
@@ -34,51 +35,87 @@ modules:
     path: sections/intro/course-03-how-this-course-is-made.md
 - id: module-010
   title: Interpret Cilium Network Polices and Intent
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Interpret Cilium Network Polices and Intent.
+  draft: true
   content:
-  - type: reading
-    title: Section Overview
-    path: sections/section-010/README.md
   - type: reading
     title: Interpret Cilium Network Polices and Intent
+    path: sections/section-010/README.md
+  - type: reading
+    title: Interpreting A Cilium Policy As A Communication Contract
     path: sections/section-010/module-01/course.md
+  - type: reading
+    title: Interpreting A Cilium Policy As A Communication Contract
+    path: sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+  - type: reading
+    title: Summary
+    path: sections/section-010/module-01/course-02-summary.md
 - id: module-020
   title: Understand Cilium's Identity-based Network Security Model
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Understand Cilium's Identity-based Network Security
+    Model.
+  draft: true
   content:
-  - type: reading
-    title: Section Overview
-    path: sections/section-020/README.md
   - type: reading
     title: Understand Cilium's Identity-based Network Security Model
+    path: sections/section-020/README.md
+  - type: reading
+    title: Security Identities, Labels And Address Independence
     path: sections/section-020/module-01/course.md
+  - type: reading
+    title: Security Identities, Labels And Address Independence
+    path: sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+  - type: reading
+    title: Summary
+    path: sections/section-020/module-01/course-02-summary.md
 - id: module-030
   title: Policy Enforcement Modes
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Policy Enforcement Modes.
+  draft: true
   content:
-  - type: reading
-    title: Section Overview
-    path: sections/section-030/README.md
   - type: reading
     title: Policy Enforcement Modes
+    path: sections/section-030/README.md
+  - type: reading
+    title: Default, Always And Never Policy Enforcement
     path: sections/section-030/module-01/course.md
+  - type: reading
+    title: Default, Always And Never Policy Enforcement
+    path: sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  - type: reading
+    title: Summary
+    path: sections/section-030/module-01/course-02-summary.md
 - id: module-040
   title: Policy Rule Structure
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Policy Rule Structure.
+  draft: true
   content:
-  - type: reading
-    title: Section Overview
-    path: sections/section-040/README.md
   - type: reading
     title: Policy Rule Structure
+    path: sections/section-040/README.md
+  - type: reading
+    title: Selectors, Peers, Ports And Application Rules
     path: sections/section-040/module-01/course.md
+  - type: reading
+    title: Selectors, Peers, Ports And Application Rules
+    path: sections/section-040/module-01/course-01-selectors-peers-ports-and-application-rules.md
+  - type: reading
+    title: Summary
+    path: sections/section-040/module-01/course-02-summary.md
 - id: module-050
   title: Kubernetes Network Policies versus Cilium Network Policies
-  description: Planned coverage of this curriculum objective.
+  description: Developed reading and reasoning for Kubernetes Network Policies versus Cilium Network Policies.
+  draft: true
   content:
   - type: reading
-    title: Section Overview
+    title: Kubernetes Network Policies versus Cilium Network Policies
     path: sections/section-050/README.md
   - type: reading
-    title: Kubernetes Network Policies versus Cilium Network Policies
+    title: Kubernetes NetworkPolicy And Cilium Extensions
     path: sections/section-050/module-01/course.md
+  - type: reading
+    title: Kubernetes NetworkPolicy And Cilium Extensions
+    path: sections/section-050/module-01/course-01-kubernetes-networkpolicy-and-cilium-extensions.md
+  - type: reading
+    title: Summary
+    path: sections/section-050/module-01/course-02-summary.md

@@ -1,0 +1,300 @@
+schema_version: 1
+kind: question_bank
+id: ats053-domain-review
+course_id: ATS053
+exam_code: CCA
+status: draft
+provenance: Original practice material; not official examination questions.
+scope:
+  type: domain
+  id: domain-review
+  title: Network Policy
+placement:
+  position: after
+  reading: sections/section-050/module-01/course-02-summary.md
+questions:
+- id: ats053-domain-review-q01
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Identify selected endpoints and traffic direction.
+  source_readings:
+  - sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+  prompt: What does endpointSelector principally identify?
+  options:
+  - id: a
+    text: Endpoints governed by the policy.
+    explanation: It defines the subject of ingress or egress restrictions.
+  - id: b
+    text: Only remote destinations in every rule.
+    explanation: Peers are specified elsewhere.
+  - id: c
+    text: The Kubernetes users allowed to edit it.
+    explanation: API permissions are a separate control.
+  correct_option: a
+  explanation: It defines the subject of ingress or egress restrictions.
+- id: ats053-domain-review-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Read peer, port and application rules as combined constraints.
+  source_readings:
+  - sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+  prompt: An egress rule selects database peers and port 5432. What is its intent?
+  options:
+  - id: a
+    text: Allow every port to every external address.
+    explanation: That exceeds the stated relationship.
+  - id: b
+    text: Grant database administrator credentials.
+    explanation: Network permission does not create application credentials.
+  - id: c
+    text: Allow the selected outbound relationship subject to the active rule semantics.
+    explanation: Peer and port constraints work together.
+  correct_option: c
+  explanation: Peer and port constraints work together.
+- id: ats053-domain-review-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain additive allowed relationships and applicable denies.
+  source_readings:
+  - sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+  prompt: What happens when an applicable Cilium deny and allow overlap?
+  options:
+  - id: a
+    text: The UI chooses randomly.
+    explanation: The enforcement contract defines the result.
+  - id: b
+    text: The deny takes precedence.
+    explanation: A broader allow does not cancel an applicable deny.
+  - id: c
+    text: The latest file name always wins.
+    explanation: Policy behavior is not ordinary filename order.
+  correct_option: b
+  explanation: A broader allow does not cancel an applicable deny.
+- id: ats053-domain-review-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain why workload labels can outlive individual Pod addresses.
+  source_readings:
+  - sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+  prompt: Why use label-based network identity?
+  options:
+  - id: a
+    text: Workload roles can remain meaningful as Pod addresses change.
+    explanation: Policy need not enumerate every temporary address.
+  - id: b
+    text: Labels encrypt payloads automatically.
+    explanation: Identity and encryption differ.
+  - id: c
+    text: Pod addresses can never change.
+    explanation: Replacement commonly changes addresses.
+  correct_option: a
+  explanation: Policy need not enumerate every temporary address.
+- id: ats053-domain-review-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish numeric security identity from API credential identity.
+  source_readings:
+  - sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+  prompt: Is a Cilium numeric identity a Kubernetes ServiceAccount token?
+  options:
+  - id: a
+    text: Yes; it can authenticate every API request directly.
+    explanation: API authentication requires supported credentials.
+  - id: b
+    text: Yes; every number grants cluster-admin.
+    explanation: A number does not define that authorization.
+  - id: c
+    text: No; they represent different mechanisms.
+    explanation: Network identity context is not an API credential.
+  correct_option: c
+  explanation: Network identity context is not an API credential.
+- id: ats053-domain-review-q06
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Evaluate label integrity and identity propagation limits.
+  source_readings:
+  - sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+  prompt: Why protect label changes?
+  options:
+  - id: a
+    text: Label integrity replaces all application authentication.
+    explanation: Different controls remain necessary.
+  - id: b
+    text: They can change which policy relationships apply.
+    explanation: Selection depends on security-relevant labels.
+  - id: c
+    text: Labels affect only dashboard colors.
+    explanation: They influence policy interpretation.
+  correct_option: b
+  explanation: Selection depends on security-relevant labels.
+- id: ats053-domain-review-q07
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Compare default, always and never agent policy modes.
+  source_readings:
+  - sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  prompt: What does always enforcement mean?
+  options:
+  - id: a
+    text: Enforcement applies even when no policy selects a particular endpoint.
+    explanation: Explicit required allows become important.
+  - id: b
+    text: Every connection is allowed permanently.
+    explanation: That contradicts the enforcement model.
+  - id: c
+    text: Only dashboard warnings are enabled.
+    explanation: It affects traffic enforcement.
+  correct_option: a
+  explanation: Explicit required allows become important.
+- id: ats053-domain-review-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain direction-specific default-deny transitions.
+  source_readings:
+  - sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  prompt: Can default-mode ingress isolation occur without equivalent egress isolation?
+  options:
+  - id: a
+    text: No; every ingress rule universally blocks all egress.
+    explanation: Directions have separate behavior.
+  - id: b
+    text: Only when the application has no labels.
+    explanation: Selection and direction, not label absence alone, determine the state.
+  - id: c
+    text: Yes; default-deny transitions are direction-specific.
+    explanation: The relevant rule directions matter.
+  correct_option: c
+  explanation: The relevant rule directions matter.
+- id: ats053-domain-review-q09
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Interpret enableDefaultDeny and Layer 7 exceptions.
+  source_readings:
+  - sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  prompt: Does disabling default-deny universally prevent Layer 7 drops?
+  options:
+  - id: a
+    text: Yes; HTTP traffic becomes encrypted instead.
+    explanation: Default-deny and encryption are different mechanisms.
+  - id: b
+    text: No; Layer 7 rules have additional enforcement behavior.
+    explanation: The documented exception must be considered.
+  - id: c
+    text: Yes; all proxy rules become observe-only automatically.
+    explanation: That is not a universal contract.
+  correct_option: b
+  explanation: The documented exception must be considered.
+- id: ats053-domain-review-q10
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Read endpointSelector separately from peer selectors.
+  source_readings:
+  - sections/section-040/module-01/course-01-selectors-peers-ports-and-application-rules.md
+  prompt: Where is the governed workload selected?
+  options:
+  - id: a
+    text: The subject endpointSelector.
+    explanation: Peer selectors describe the other side of traffic.
+  - id: b
+    text: Only in every toEndpoints field.
+    explanation: That describes destinations for egress rules.
+  - id: c
+    text: In the receiver's dashboard title.
+    explanation: Presentation does not select endpoints.
+  correct_option: a
+  explanation: Peer selectors describe the other side of traffic.
+- id: ats053-domain-review-q11
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain endpoint, entity, CIDR and FQDN peer mechanisms.
+  source_readings:
+  - sections/section-040/module-01/course-01-selectors-peers-ports-and-application-rules.md
+  prompt: Why are FQDN rules different from static workload selectors?
+  options:
+  - id: a
+    text: A hostname is permanently one authenticated Pod identity.
+    explanation: DNS and workload identity are not equivalent.
+  - id: b
+    text: FQDN rules grant every API verb.
+    explanation: They define network relationships.
+  - id: c
+    text: They depend on supported DNS-to-address handling.
+    explanation: Names and managed endpoint labels are different contexts.
+  correct_option: c
+  explanation: Names and managed endpoint labels are different contexts.
+- id: ats053-domain-review-q12
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Combine transport and Layer 7 constraints correctly.
+  source_readings:
+  - sections/section-040/module-01/course-01-selectors-peers-ports-and-application-rules.md
+  prompt: Why can an HTTP policy need proxy prerequisites?
+  options:
+  - id: a
+    text: The ServiceAccount token is the HTTP parser.
+    explanation: Credentials do not implement protocol parsing.
+  - id: b
+    text: It must interpret application protocol operations.
+    explanation: Ports alone do not provide method or path semantics.
+  - id: c
+    text: Every kernel packet header contains the HTTP route directly.
+    explanation: Application data needs appropriate handling.
+  correct_option: b
+  explanation: Ports alone do not provide method or path semantics.
+- id: ats053-domain-review-q13
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain the portable Kubernetes policy contract.
+  source_readings:
+  - sections/section-050/module-01/course-01-kubernetes-networkpolicy-and-cilium-extensions.md
+  prompt: Which API is the portable Kubernetes policy resource?
+  options:
+  - id: a
+    text: NetworkPolicy.
+    explanation: Its contract is part of the Kubernetes networking API.
+  - id: b
+    text: CiliumClusterwideNetworkPolicy in every network plugin.
+    explanation: That is implementation-specific.
+  - id: c
+    text: An HTTPRoute alone.
+    explanation: Routing intent is not the same policy API.
+  correct_option: a
+  explanation: Its contract is part of the Kubernetes networking API.
+- id: ats053-domain-review-q14
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish additive allows from explicit deny support.
+  source_readings:
+  - sections/section-050/module-01/course-01-kubernetes-networkpolicy-and-cilium-extensions.md
+  prompt: How do standard allow policies combine?
+  options:
+  - id: a
+    text: The last policy filename always overrides all earlier ones.
+    explanation: The contract is not ordinary file order.
+  - id: b
+    text: Every standard policy provides a general explicit deny field.
+    explanation: That is not the standard model.
+  - id: c
+    text: Applicable allowed relationships are additive.
+    explanation: One omitted allow does not cancel another grant.
+  correct_option: c
+  explanation: One omitted allow does not cancel another grant.
+- id: ats053-domain-review-q15
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Evaluate portability and implementation-specific traffic coverage.
+  source_readings:
+  - sections/section-050/module-01/course-01-kubernetes-networkpolicy-and-cilium-extensions.md
+  prompt: What must be reviewed before migrating Cilium policy to another implementation?
+  options:
+  - id: a
+    text: Nothing because all CRDs are universally enforced.
+    explanation: A CRD needs its implementation.
+  - id: b
+    text: Which extended semantics and traffic coverage are supported.
+    explanation: Resource presence alone cannot preserve implementation-specific features.
+  - id: c
+    text: Only whether the new plugin uses the same logo color.
+    explanation: Branding does not establish compatibility.
+  correct_option: b
+  explanation: Resource presence alone cannot preserve implementation-specific features.
