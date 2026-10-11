@@ -1,18 +1,19 @@
-# ATS053 — CCA: Network Policy
+# Network Policy (ATS053)
 
-Preparation for the **Network Policy** domain of **Cilium Certified Associate (CCA)**.
-The published domain weight is **18%**. This repository belongs to
-the [ATP011 training path](https://github.com/astrona-io/ATP011).
+Cilium Certified Associate (CCA): Network Policy, worth 18% of the official curriculum. This course belongs to ATP011.
 
-**Status:** Preparation scaffold; content authoring has not started.
+Developed reading explains mechanisms, responsible components, examples and limits. Every section has an introduction and every module closes with a summary. Reusable YAML checks contain 5–15 questions per bank. Technical content remains draft. No labs or playgrounds are included.
 
-The initial commit reserves the curriculum structure. Lessons, playgrounds,
-labs and assessments are planned and are not ready for learner use.
+## Course Outline
 
-See [CURRICULUM.md](CURRICULUM.md) for the objective map and authoring checklist,
-[astrona.yaml](astrona.yaml) for the course manifest, and
-[CLAUDE.md](CLAUDE.md) for writing and environment rules.
+| Section / module | Module | Teaching files |
+| --- | --- | --- |
+| 010 / 01 | Interpreting A Cilium Policy As A Communication Contract | Interpreting A Cilium Policy As A Communication Contract |
+| 020 / 01 | Security Identities, Labels And Address Independence | Security Identities, Labels And Address Independence |
+| 030 / 01 | Default, Always And Never Policy Enforcement | Default, Always And Never Policy Enforcement |
+| 040 / 01 | Selectors, Peers, Ports And Application Rules | Selectors, Peers, Ports And Application Rules |
+| 050 / 01 | Kubernetes NetworkPolicy And Cilium Extensions | Kubernetes NetworkPolicy And Cilium Extensions |
 
-Curriculum source: [official CCA page](https://training.linuxfoundation.org/certification/cilium-certified-associate-cca/), checked 2026-10-10.
-License: [Apache-2.0](LICENSE). Curriculum objectives retain attribution to
-The Linux Foundation and CNCF; see [CNCF curriculum licensing](https://github.com/cncf/curriculum).
+## Author Review
+
+See [curriculum coverage](CURRICULUM.md), [primary sources](SOURCES.md), [question-bank documentation](ASSESSMENTS.md) and [contribution instructions](CONTRIBUTING.md). No runtime execution is claimed.
