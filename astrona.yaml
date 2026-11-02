@@ -36,7 +36,7 @@ modules:
   title: Interpret Cilium Network Polices and Intent
   description: Developed reading and reasoning for Interpret Cilium Network Polices
     and Intent.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Interpret Cilium Network Polices and Intent
@@ -75,7 +75,7 @@ modules:
   title: Understand Cilium's Identity-based Network Security Model
   description: Developed reading and reasoning for Understand Cilium's Identity-based
     Network Security Model.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Understand Cilium's Identity-based Network Security Model
@@ -113,7 +113,7 @@ modules:
 - id: module-030
   title: Policy Enforcement Modes
   description: Developed reading and reasoning for Policy Enforcement Modes.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Policy Enforcement Modes
@@ -151,7 +151,7 @@ modules:
 - id: module-040
   title: Policy Rule Structure
   description: Developed reading and reasoning for Policy Rule Structure.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Policy Rule Structure
@@ -208,7 +208,7 @@ modules:
   title: Kubernetes Network Policies versus Cilium Network Policies
   description: Developed reading and reasoning for Kubernetes Network Policies versus
     Cilium Network Policies.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Kubernetes Network Policies versus Cilium Network Policies
