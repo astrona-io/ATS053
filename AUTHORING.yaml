@@ -1,0 +1,124 @@
+version: 1
+approval: CCA requested 2026-10-11; established reading-only scope
+course:
+  id: ATS053
+  certification:
+    name: Cilium Certified Associate
+    code: CCA
+    provider: CNCF / Linux Foundation
+    domain: Network Policy
+    weight: 18
+    competencies:
+    - Interpret Cilium Network Polices and Intent
+    - Understand Cilium's Identity-based Network Security Model
+    - Policy Enforcement Modes
+    - Policy Rule Structure
+    - Kubernetes Network Policies versus Cilium Network Policies
+defaults:
+  playground: false
+  module_lab: false
+  capstone: false
+  section_quiz: false
+  final_quiz: true
+assessment_format: YAML question banks v1, registered in assessments/index.yaml
+sections:
+- id: section-010
+  title: Interpret Cilium Network Polices and Intent
+  curriculum_item: Interpret Cilium Network Polices and Intent
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Interpreting A Cilium Policy As A Communication Contract
+    objectives:
+    - Identify selected endpoints and traffic direction.
+    - Read peer, port and application rules as combined constraints.
+    - Explain additive allowed relationships and applicable denies.
+    - Trace DNS and dependency needs without broad exceptions.
+    outline:
+    - Interpreting A Cilium Policy As A Communication Contract
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+      adapted_from: null
+- id: section-020
+  title: Understand Cilium's Identity-based Network Security Model
+  curriculum_item: Understand Cilium's Identity-based Network Security Model
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Security Identities, Labels And Address Independence
+    objectives:
+    - Explain why workload labels can outlive individual Pod addresses.
+    - Distinguish numeric security identity from API credential identity.
+    - Interpret reserved identities and selector scope.
+    - Evaluate label integrity and identity propagation limits.
+    outline:
+    - Security Identities, Labels And Address Independence
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+      adapted_from: null
+- id: section-030
+  title: Policy Enforcement Modes
+  curriculum_item: Policy Enforcement Modes
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Default, Always And Never Policy Enforcement
+    objectives:
+    - Compare default, always and never agent policy modes.
+    - Explain direction-specific default-deny transitions.
+    - Interpret enableDefaultDeny and Layer 7 exceptions.
+    - Assess rollout dependencies before changing enforcement.
+    outline:
+    - Default, Always And Never Policy Enforcement
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+      adapted_from: null
+- id: section-040
+  title: Policy Rule Structure
+  curriculum_item: Policy Rule Structure
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Selectors, Peers, Ports And Application Rules
+    objectives:
+    - Read endpointSelector separately from peer selectors.
+    - Explain endpoint, entity, CIDR and FQDN peer mechanisms.
+    - Combine transport and Layer 7 constraints correctly.
+    - Account for namespace scope, deny rules and proxy prerequisites.
+    outline:
+    - Selectors, Peers, Ports And Application Rules
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-040/module-01/course-01-selectors-peers-ports-and-application-rules.md
+      adapted_from: null
+- id: section-050
+  title: Kubernetes Network Policies versus Cilium Network Policies
+  curriculum_item: Kubernetes Network Policies versus Cilium Network Policies
+  capstone: false
+  section_quiz: false
+  modules:
+  - id: module-01
+    title: Kubernetes NetworkPolicy And Cilium Extensions
+    objectives:
+    - Explain the portable Kubernetes policy contract.
+    - Compare namespaced Cilium and cluster-wide extended resources.
+    - Distinguish additive allows from explicit deny support.
+    - Evaluate portability and implementation-specific traffic coverage.
+    outline:
+    - Kubernetes NetworkPolicy And Cilium Extensions
+    playground: false
+    module_lab: false
+    sources:
+    - reading: sections/section-050/module-01/course-01-kubernetes-networkpolicy-and-cilium-extensions.md
+      adapted_from: null
