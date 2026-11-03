@@ -1,0 +1,18 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-drifter
+  namespace: starfleet
+spec:
+  endpointSelector:
+    matchLabels:
+      app: probe
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: drifter
+        k8s:io.kubernetes.pod.namespace: outpost
+    toPorts:
+    - ports:
+      - port: "8080"
+        protocol: TCP

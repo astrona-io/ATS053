@@ -1,0 +1,19 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: observe-shuttle
+  namespace: starfleet
+spec:
+  endpointSelector:
+    matchLabels:
+      app: probe
+  enableDefaultDeny:
+    ingress: false
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: shuttle
+    toPorts:
+    - ports:
+      - port: "8080"
+        protocol: TCP

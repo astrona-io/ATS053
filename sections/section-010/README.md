@@ -5,13 +5,14 @@ exam_objectives:
 ---
 # Interpret Cilium Network Polices and Intent
 
-This section covers interpret Cilium Network Polices and Intent. It develops interpreting A Cilium Policy As A Communication Contract through mechanisms, examples, prerequisites and failure reasoning.
+This section teaches how to read a Cilium policy as a contract: which pods it selects, in which direction it acts, who may connect and on which port. It also covers the dependencies that an application needs, such as name resolution, and how to ask the Cilium agent which policy it enforces.
 
-Read the module goals, teaching and closing summary in order. YAML checks are indexed separately and appear after designated summaries. Larger domains include an intermediate checkpoint before the final review.
+The first module reads subject, direction, peers, ports and the way rules combine. The second module adds egress dependencies, DNS, and the evidence you collect from the agent. A capstone lab and a quiz close the section.
 
 ## Learning Outcomes
 
-- Identify selected endpoints and traffic direction.
-- Read peer, port and application rules as combined constraints.
-- Explain additive allowed relationships and applicable denies.
-- Trace DNS and dependency needs without broad exceptions.
+- Identify the pods a policy selects and the direction it acts on.
+- Read peer, port and Layer 7 fields as combined constraints, and rules as a union.
+- Explain why an egress policy must allow DNS before a named destination works.
+- Read the enforcement state and the realized rules of an endpoint with `cilium-dbg`.
+- Tell a policy drop from another failure by using drop events and Hubble verdicts.

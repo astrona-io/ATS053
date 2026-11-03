@@ -3,22 +3,23 @@ draft: true
 exam_objectives:
 - Interpret Cilium Network Polices and Intent
 ---
-# Interpreting A Cilium Policy As A Communication Contract
+# Reading A CiliumNetworkPolicy
 
-This module develops interpreting A Cilium Policy As A Communication Contract. Use the explanations to connect intended behavior with responsible components and observable evidence.
+A CiliumNetworkPolicy is a Kubernetes custom resource. It tells the Cilium agent on each node which network traffic to allow or deny for a selected group of pods. This module teaches how to read one policy and state, in plain words, what it permits and what it blocks.
+
+The module works in a private playground. The playground is a kind cluster (Kubernetes running in containers) with Cilium as its network plugin. It has a Service named `probe` in the `starfleet` namespace, a client pod named `shuttle` in `starfleet`, and a client pod named `drifter` in the `outpost` namespace.
 
 ## Learning Goals
 
-- Identify selected endpoints and traffic direction.
-- Read peer, port and application rules as combined constraints.
-- Explain additive allowed relationships and applicable denies.
-- Trace DNS and dependency needs without broad exceptions.
+- Find the subject of a policy and the direction of each rule.
+- Read peer, port and application constraints inside one rule as a single combined condition.
+- Explain why several allow rules add up, and why a matching deny rule wins.
+- Say which traffic is still allowed after a policy selects an endpoint, and why.
 
 ## Before You Start
 
-Examples illustrate declared relationships and reasoning. No execution environment is required or claimed.
+You need basic Kubernetes knowledge: pods, labels, namespaces and Services. You need `kubectl` and the `astrona` command. The playground starts from the marker at the end of this page. It has no policy at the start, so every request between the pods works.
 
-## Reading Order
+The parts of the module read in this order. The first part names the subject and the direction. The second part reads peers, ports and combinations. The third part applies a policy and tests it with real requests. A summary closes the module.
 
-1. Interpreting A Cilium Policy As A Communication Contract
-2. Summary
+<!-- astrona:playground -->

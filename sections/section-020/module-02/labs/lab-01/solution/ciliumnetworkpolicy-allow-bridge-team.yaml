@@ -1,0 +1,17 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-bridge-team
+  namespace: starfleet
+spec:
+  endpointSelector:
+    matchLabels:
+      app: probe
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        team: bridge
+    toPorts:
+    - ports:
+      - port: "8080"
+        protocol: TCP

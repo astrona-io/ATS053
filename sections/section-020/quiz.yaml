@@ -1,0 +1,258 @@
+# Knowledge check for section 020. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats053-020
+course_id: ATS053
+exam_code: CCA
+status: draft
+provenance: Original practice material written for this course; not official exam
+  questions.
+scope:
+  type: section
+  id: section-020
+  title: Understand Cilium's Identity-based Network Security Model
+questions:
+- id: ats053-020-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Explain why Cilium uses identities instead of addresses
+  source_readings:
+  - sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+  prompt: Why does a Cilium rule name identities and not pod IP addresses?
+  options:
+  - id: a
+    text: Pod IP addresses cannot be read by the datapath.
+    explanation: The datapath reads addresses, and it maps them to identities.
+  - id: b
+    text: Pods change addresses often, and an identity from labels keeps the rule
+      stable.
+    explanation: Correct. Pods with the same labels share an identity, so a new pod
+      joins it without any rule change.
+  - id: c
+    text: Identities are encrypted and addresses are not.
+    explanation: Identities are not a form of encryption.
+  - id: d
+    text: Kubernetes forbids IP addresses in policies.
+    explanation: CIDR rules use addresses.
+  correct_option: b
+  explanation: Pods with the same labels share an identity, so a new pod joins it
+    without any rule change.
+- id: ats053-020-q02
+  type: single_choice
+  difficulty: beginner
+  learning_objective: State what an identity is derived from
+  source_readings:
+  - sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+  prompt: Which input decides the security identity of a pod?
+  options:
+  - id: a
+    text: Its relevant labels together with its namespace.
+    explanation: Correct. Pods with the same relevant label set and namespace share
+      an identity.
+  - id: b
+    text: Its IP address.
+    explanation: The address does not decide the identity.
+  - id: c
+    text: Its node name.
+    explanation: Pods on different nodes with the same labels share an identity.
+  - id: d
+    text: Its container image.
+    explanation: The image is not part of the identity.
+  correct_option: a
+  explanation: Pods with the same relevant label set and namespace share an identity.
+- id: ats053-020-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Know which labels are ignored
+  source_readings:
+  - sections/section-020/module-01/course-02-how-labels-become-an-identity.md
+  prompt: A rollout adds a new `pod-template-hash` label to pods that already carry
+    `app=shuttle`. What happens to their identity?
+  options:
+  - id: a
+    text: It changes for every rollout.
+    explanation: That would happen only if the label were relevant.
+  - id: b
+    text: The pods get no identity until the label is removed.
+    explanation: Pods keep their identity.
+  - id: c
+    text: The policy must be rewritten.
+    explanation: The identity stays the same, so the policy keeps matching.
+  - id: d
+    text: It does not change, because Cilium excludes that label from the identity.
+    explanation: Correct. The default filter ignores `pod-template-hash`, so replicas
+      keep one identity.
+  correct_option: d
+  explanation: The default filter ignores `pod-template-hash`, so replicas keep one
+    identity.
+- id: ats053-020-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Predict the effect of a relevant label change
+  source_readings:
+  - sections/section-020/module-01/course-02-how-labels-become-an-identity.md
+  prompt: A policy allows the label `team=bridge`. An administrator adds `team=bridge`
+    to a running pod. What happens?
+  options:
+  - id: a
+    text: Nothing, because identities never change after creation.
+    explanation: The identity follows the relevant label set.
+  - id: b
+    text: The pod restarts.
+    explanation: A label change does not restart a pod.
+  - id: c
+    text: The pod gets a new identity that the policy matches.
+    explanation: Correct. A new relevant label changes the label set, so the identity
+      changes.
+  - id: d
+    text: The policy is deleted.
+    explanation: Policies are not changed by a label change.
+  correct_option: c
+  explanation: A new relevant label changes the label set, so the identity changes.
+- id: ats053-020-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain subset matching of selectors
+  source_readings:
+  - sections/section-020/module-01/course-02-how-labels-become-an-identity.md
+  prompt: 'A selector asks for `app: shuttle`. A pod has `app=shuttle` and `team=bridge`.
+    Does the selector match?'
+  options:
+  - id: a
+    text: No, because the pod has an extra label.
+    explanation: Selectors match subsets.
+  - id: b
+    text: Yes, because a selector matches an identity whose labels contain all selector
+      labels.
+    explanation: Correct. Extra labels never break a match.
+  - id: c
+    text: Only if the namespace label is also written.
+    explanation: In a namespaced policy, the namespace defaults to the namespace of
+      the policy.
+  - id: d
+    text: Only after an agent restart.
+    explanation: No restart is needed.
+  correct_option: b
+  explanation: Extra labels never break a match.
+- id: ats053-020-q06
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Select peers across namespaces
+  source_readings:
+  - sections/section-020/module-02/course-01-selecting-peers-across-namespaces.md
+  prompt: 'A CiliumNetworkPolicy in `starfleet` allows `fromEndpoints` with `app:
+    drifter`. The `drifter` pod is in `outpost`. Is it allowed?'
+  options:
+  - id: a
+    text: No, because the selector defaults to the namespace `starfleet`.
+    explanation: Correct. A namespaced policy defaults peer selectors to its own namespace.
+      The namespace label is needed to cross it.
+  - id: b
+    text: Yes, because the label matches.
+    explanation: The namespace is part of the identity.
+  - id: c
+    text: Yes, because `outpost` is a reserved namespace.
+    explanation: No namespace is reserved for this.
+  - id: d
+    text: Only for UDP traffic.
+    explanation: The protocol is not the reason.
+  correct_option: a
+  explanation: A namespaced policy defaults peer selectors to its own namespace. The
+    namespace label is needed to cross it.
+- id: ats053-020-q07
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Choose between policy kinds by scope
+  source_readings:
+  - sections/section-020/module-02/course-01-selecting-peers-across-namespaces.md
+  prompt: A rule must select `probe` pods in every namespace. Which resource fits?
+  options:
+  - id: a
+    text: A CiliumNetworkPolicy in `kube-system`.
+    explanation: A namespaced policy selects subjects only in its own namespace.
+  - id: b
+    text: A CiliumNetworkPolicy with the label `all`.
+    explanation: There is no such scope label.
+  - id: c
+    text: A NetworkPolicy with an empty selector.
+    explanation: It selects pods only in its own namespace.
+  - id: d
+    text: A CiliumClusterwideNetworkPolicy.
+    explanation: Correct. It has no namespace, and its endpoint selector can match
+      pods in every namespace.
+  correct_option: d
+  explanation: It has no namespace, and its endpoint selector can match pods in every
+    namespace.
+- id: ats053-020-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Name the entity for peers outside the cluster
+  source_readings:
+  - sections/section-020/module-02/course-02-reserved-identities-entities-and-cidr.md
+  prompt: Which entity selects addresses outside the cluster that have no other identity?
+  options:
+  - id: a
+    text: "`cluster`"
+    explanation: It selects everything inside the cluster.
+  - id: b
+    text: "`host`"
+    explanation: It selects the local node.
+  - id: c
+    text: "`world`"
+    explanation: Correct. The reserved identity `world` covers addresses outside the
+      cluster.
+  - id: d
+    text: "`init`"
+    explanation: It marks an endpoint whose identity is not yet resolved.
+  correct_option: c
+  explanation: The reserved identity `world` covers addresses outside the cluster.
+- id: ats053-020-q09
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: State what a CIDR rule does not select
+  source_readings:
+  - sections/section-020/module-02/course-02-reserved-identities-entities-and-cidr.md
+  prompt: A team writes a `toCIDR` rule for the address of a cluster pod. Why is this
+    a poor choice?
+  options:
+  - id: a
+    text: CIDR rules are only valid for IPv6.
+    explanation: They work for IPv4 and IPv6.
+  - id: b
+    text: CIDR rules do not select cluster pods, and pod addresses change when pods
+      restart.
+    explanation: Correct. Cluster endpoints are selected by identity, and addresses
+      are not stable.
+  - id: c
+    text: CIDR rules always allow all ports.
+    explanation: They can carry `toPorts` like other rules.
+  - id: d
+    text: CIDR rules need a clusterwide policy.
+    explanation: They work in both kinds.
+  correct_option: b
+  explanation: Cluster endpoints are selected by identity, and addresses are not stable.
+- id: ats053-020-q10
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Explain who controls identities
+  source_readings:
+  - sections/section-020/module-01/course-02-how-labels-become-an-identity.md
+  prompt: A policy trusts the label `team=bridge`. Which fact is a security risk?
+  options:
+  - id: a
+    text: Anyone who can set labels on a pod can place that pod in the trusted identity.
+    explanation: Correct. Labels decide the identity, so label control is part of
+      the security design.
+  - id: b
+    text: Identity numbers are the same in every cluster.
+    explanation: Numbers are allocated per cluster.
+  - id: c
+    text: The agent stores identities in the pod.
+    explanation: Identities are stored as CiliumIdentity resources or a key-value
+      store.
+  - id: d
+    text: The label is visible with `kubectl`.
+    explanation: Visibility is not the risk.
+  correct_option: a
+  explanation: Labels decide the identity, so label control is part of the security
+    design.

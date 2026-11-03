@@ -1,0 +1,81 @@
+{
+  "context": "kind-astro-ats-053-playground-010-01",
+  "resources": [
+    {
+      "kind": "ciliumnetworkpolicy",
+      "name": "allow-shuttle",
+      "namespace": "starfleet",
+      "expected": {
+        "apiVersion": "cilium.io/v2",
+        "kind": "CiliumNetworkPolicy",
+        "metadata": {
+          "name": "allow-shuttle",
+          "namespace": "starfleet"
+        },
+        "spec": {
+          "endpointSelector": {
+            "matchLabels": {
+              "app": "probe"
+            }
+          },
+          "ingress": [
+            {
+              "fromEndpoints": [
+                {
+                  "matchLabels": {
+                    "k8s:io.kubernetes.pod.namespace": "starfleet"
+                  }
+                }
+              ],
+              "toPorts": [
+                {
+                  "ports": [
+                    {
+                      "port": "8080",
+                      "protocol": "TCP"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "behavior": [
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "starfleet",
+        "exec",
+        "shuttle",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; print(urllib.request.urlopen('http://probe:8080/',timeout=4).read().decode())"
+      ],
+      "contains": [
+        "probe-ready"
+      ]
+    },
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "outpost",
+        "exec",
+        "drifter",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; urllib.request.urlopen('http://probe.starfleet.svc:8080/',timeout=3).read()"
+      ],
+      "denied": true,
+      "failure_markers": [
+        "timed out"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,277 @@
+# Knowledge check for section 010. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats053-010
+course_id: ATS053
+exam_code: CCA
+status: draft
+provenance: Original practice material written for this course; not official exam
+  questions.
+scope:
+  type: section
+  id: section-010
+  title: Interpret Cilium Network Polices and Intent
+questions:
+- id: ats053-010-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Identify the subject and direction of a CiliumNetworkPolicy
+  source_readings:
+  - sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+  prompt: 'A CiliumNetworkPolicy in `starfleet` has `endpointSelector` with `app:
+    probe` and one `ingress` rule with `fromEndpoints` for `app: shuttle`. Which statement
+    describes the policy?'
+  options:
+  - id: a
+    text: Traffic that leaves the `shuttle` pods is restricted to the `probe` pods.
+    explanation: The `shuttle` pods are the peer and not the subject, and ingress
+      describes traffic that arrives at the subject.
+  - id: b
+    text: Traffic that arrives at the `probe` pods is allowed from the `shuttle` pods
+      in the namespace of the policy.
+    explanation: Correct. The subject is the `probe` pods, and an ingress rule names
+      the allowed sources of traffic that arrives at the subject.
+  - id: c
+    text: The `shuttle` pods are the subject and the `probe` pods are the allowed
+      sources.
+    explanation: The `endpointSelector` field names the subject, which is `probe`
+      here.
+  - id: d
+    text: Traffic from all pods to the `probe` pods is allowed, and `shuttle` only
+      gets priority.
+    explanation: Rules allow traffic. They do not set priorities.
+  correct_option: b
+  explanation: The subject is the `probe` pods, and an ingress rule names the allowed
+    sources of traffic that arrives at the subject.
+- id: ats053-010-q02
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Predict the effect of the first ingress policy on a pod
+  source_readings:
+  - sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+  prompt: No policy selects the `probe` pods. A new policy selects them and has one
+    ingress rule that allows `shuttle`. What happens to a request from `drifter` to
+    `probe`?
+  options:
+  - id: a
+    text: It is dropped, because the policy puts the `probe` pods into default deny
+      for ingress.
+    explanation: Correct. A policy with an ingress section turns on default deny for
+      ingress, and no rule allows `drifter`.
+  - id: b
+    text: It is allowed, because the policy does not name `drifter`.
+    explanation: A selected endpoint allows only what the rules allow. Not naming
+      a peer does not allow it.
+  - id: c
+    text: It is allowed until the agent restarts.
+    explanation: The agent applies the policy when it realizes it, and no restart
+      is needed.
+  - id: d
+    text: It is allowed, because Cilium policies only restrict egress.
+    explanation: Cilium policies restrict ingress and egress.
+  correct_option: a
+  explanation: A policy with an ingress section turns on default deny for ingress,
+    and no rule allows `drifter`.
+- id: ats053-010-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Combine fields and list items correctly
+  source_readings:
+  - sections/section-010/module-01/course-02-peers-ports-and-combination.md
+  prompt: 'An ingress rule has `fromEndpoints` for `app: shuttle` and `toPorts` for
+    TCP 8080. Which request is allowed?'
+  options:
+  - id: a
+    text: A request from a `shuttle` pod to TCP port 9090.
+    explanation: The port does not match, so the rule does not allow it.
+  - id: b
+    text: A request from any pod to TCP port 8080.
+    explanation: The peer field restricts the sources to `shuttle`.
+  - id: c
+    text: A request from any pod to any port.
+    explanation: Both fields restrict the rule.
+  - id: d
+    text: A request from a `shuttle` pod to TCP port 8080.
+    explanation: Correct. Fields in one rule are joined with AND, so both the peer
+      and the port must match.
+  correct_option: d
+  explanation: Fields in one rule are joined with AND, so both the peer and the port
+    must match.
+- id: ats053-010-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain how several policies add up
+  source_readings:
+  - sections/section-010/module-01/course-02-peers-ports-and-combination.md
+  prompt: Policy A allows `shuttle` to `probe` on TCP 8080. Policy B, on the same
+    pods, allows every pod in the cluster on every port. What does the agent enforce?
+  options:
+  - id: a
+    text: Only policy A, because it is more specific.
+    explanation: Cilium does not rank policies by specificity.
+  - id: b
+    text: Only the policy that was applied first.
+    explanation: Order of application does not matter.
+  - id: c
+    text: The union of both, so every pod may use every port.
+    explanation: Correct. Allow rules of all policies that select an endpoint are
+      joined by union, and a rule can only add permissions.
+  - id: d
+    text: The intersection of both, so only `shuttle` on 8080.
+    explanation: Allow rules add up. They are never intersected.
+  correct_option: c
+  explanation: Allow rules of all policies that select an endpoint are joined by union,
+    and a rule can only add permissions.
+- id: ats053-010-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain why egress policies need a DNS rule
+  source_readings:
+  - sections/section-010/module-02/course-01-egress-dependencies-and-dns.md
+  prompt: An egress policy for `drifter` allows only the `probe` pods on TCP 8080.
+    The application calls `probe.starfleet.svc` and reports a name resolution error.
+    What is the cause?
+  options:
+  - id: a
+    text: The `probe` Service has no endpoints.
+    explanation: That would give a connection error after resolution, not a name resolution
+      error.
+  - id: b
+    text: The policy puts `drifter` into default deny for egress, and no rule allows
+      the DNS service.
+    explanation: Correct. The name lookup is a separate connection to the DNS service
+      on port 53, and the policy drops it.
+  - id: c
+    text: The port 8080 rule is invalid, because it needs UDP.
+    explanation: HTTP uses TCP, and the lookup is a different connection.
+  - id: d
+    text: Egress policies are not supported for pods in other namespaces.
+    explanation: Egress policies apply to the pods they select in any case.
+  correct_option: b
+  explanation: The name lookup is a separate connection to the DNS service on port
+    53, and the policy drops it.
+- id: ats053-010-q06
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: State what a toFQDNs rule depends on
+  source_readings:
+  - sections/section-010/module-02/course-01-egress-dependencies-and-dns.md
+  prompt: A pod has a `toFQDNs` rule for `api.example.com` and no DNS rule. What is
+    the result?
+  options:
+  - id: a
+    text: The rule allows no connection, because Cilium learns the addresses from
+      DNS answers that pass through the DNS proxy.
+    explanation: Correct. Without a DNS rule, the proxy does not see the answers,
+      so the name has no allowed addresses.
+  - id: b
+    text: The rule allows every address of the name after one lookup.
+    explanation: The addresses come from the proxy, and the proxy needs a DNS rule.
+  - id: c
+    text: The rule allows the whole internet.
+    explanation: A `toFQDNs` rule allows only addresses learned for the named domains.
+  - id: d
+    text: The rule is rejected by the API server.
+    explanation: The API server accepts it. The effect is the problem.
+  correct_option: a
+  explanation: Without a DNS rule, the proxy does not see the answers, so the name
+    has no allowed addresses.
+- id: ats053-010-q07
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Read the enforcement state of an endpoint
+  source_readings:
+  - sections/section-010/module-02/course-02-effective-policy-and-evidence.md
+  prompt: Which command shows whether ingress and egress policy enforcement is enabled
+    for each endpoint on a node?
+  options:
+  - id: a
+    text: "`kubectl get networkpolicy -A`"
+    explanation: It lists NetworkPolicy objects, not the enforcement state of endpoints.
+  - id: b
+    text: "`kubectl describe node`"
+    explanation: It does not show Cilium endpoint enforcement.
+  - id: c
+    text: "`cilium-dbg monitor --type drop`"
+    explanation: It streams drop events and does not list endpoint state.
+  - id: d
+    text: "`cilium-dbg endpoint list` on the agent of that node."
+    explanation: Correct. The list has ingress and egress enforcement columns for
+      each endpoint.
+  correct_option: d
+  explanation: The list has ingress and egress enforcement columns for each endpoint.
+- id: ats053-010-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Tell a policy drop from another failure
+  source_readings:
+  - sections/section-010/module-02/course-02-effective-policy-and-evidence.md
+  prompt: A request fails with a timeout, and the drop stream of the agent on the
+    destination node shows no event while you repeat the request. What does this suggest?
+  options:
+  - id: a
+    text: Policy dropped the request, and the drop is hidden.
+    explanation: Policy drops are reported.
+  - id: b
+    text: The agent is in audit mode for the whole cluster.
+    explanation: Audit mode would show audit events, and the request would not time
+      out because of policy.
+  - id: c
+    text: A Cilium policy decision on that node is not the cause.
+    explanation: Correct. A policy drop produces a drop event. No event points to
+      routing, the application or a missing Service endpoint.
+  - id: d
+    text: The policy is correct and the request must be retried until it passes.
+    explanation: A retry does not fix a cause outside policy.
+  correct_option: c
+  explanation: A policy drop produces a drop event. No event points to routing, the
+    application or a missing Service endpoint.
+- id: ats053-010-q09
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Use Hubble verdicts
+  source_readings:
+  - sections/section-010/module-02/course-02-effective-policy-and-evidence.md
+  prompt: Which Hubble verdict marks a flow that a policy would drop but audit mode
+    allowed?
+  options:
+  - id: a
+    text: "`FORWARDED`"
+    explanation: This verdict marks an allowed flow.
+  - id: b
+    text: "`AUDIT`"
+    explanation: Correct. Audit mode reports would-be drops with the verdict `AUDIT`.
+  - id: c
+    text: "`DROPPED`"
+    explanation: This verdict marks a flow that was dropped.
+  - id: d
+    text: "`ERROR`"
+    explanation: This is not a policy verdict.
+  correct_option: b
+  explanation: Audit mode reports would-be drops with the verdict `AUDIT`.
+- id: ats053-010-q10
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Recognize a Layer 7 rejection from the client
+  source_readings:
+  - sections/section-010/module-01/course-02-peers-ports-and-combination.md
+  prompt: A rule allows `GET /public` on TCP 8080. A client sends `GET /private` and
+    receives an HTTP response immediately. Which status shows that the Layer 7 rule
+    rejected it?
+  options:
+  - id: a
+    text: 403, access denied, sent by the proxy.
+    explanation: Correct. A Layer 7 mismatch gets an HTTP 403 from the proxy. A Layer
+      3 or Layer 4 drop gets no answer.
+  - id: b
+    text: No answer until the client times out.
+    explanation: That is the behaviour of a Layer 3 or Layer 4 drop.
+  - id: c
+    text: 301, moved permanently.
+    explanation: The proxy does not redirect.
+  - id: d
+    text: 200, because the port is allowed.
+    explanation: The port is allowed, but the path does not match.
+  correct_option: a
+  explanation: A Layer 7 mismatch gets an HTTP 403 from the proxy. A Layer 3 or Layer
+    4 drop gets no answer.

@@ -1,0 +1,99 @@
+{
+  "resources": [
+    {
+      "kind": "pod",
+      "name": "shuttle",
+      "expected": {
+        "metadata": {
+          "labels": {
+            "team": "bridge"
+          }
+        }
+      },
+      "state": "pod"
+    },
+    {
+      "kind": "pod",
+      "name": "drifter",
+      "expected": {
+        "metadata": {
+          "labels": {
+            "team": "bridge"
+          }
+        }
+      },
+      "namespace": "outpost",
+      "state": "pod"
+    },
+    {
+      "kind": "ciliumclusterwidenetworkpolicy",
+      "name": "allow-bridge-team-everywhere",
+      "namespace": "",
+      "expected": {
+        "kind": "CiliumClusterwideNetworkPolicy",
+        "metadata": {
+          "name": "allow-bridge-team-everywhere"
+        },
+        "spec": {
+          "endpointSelector": {
+            "matchLabels": {
+              "app": "probe"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "behavior": [
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "starfleet",
+        "exec",
+        "shuttle",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; print(urllib.request.urlopen('http://probe:8080/',timeout=4).read().decode())"
+      ],
+      "contains": [
+        "probe-ready"
+      ]
+    },
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "outpost",
+        "exec",
+        "drifter",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; print(urllib.request.urlopen('http://probe.starfleet.svc:8080/',timeout=4).read().decode())"
+      ],
+      "contains": [
+        "probe-ready"
+      ]
+    },
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "outpost",
+        "exec",
+        "intruder",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; urllib.request.urlopen('http://probe.starfleet.svc:8080/',timeout=3).read()"
+      ],
+      "denied": true,
+      "failure_markers": [
+        "timed out"
+      ]
+    }
+  ],
+  "context": "kind-astro-ats-053-capstone-020-01"
+}

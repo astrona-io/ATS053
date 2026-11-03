@@ -1,0 +1,71 @@
+{
+  "resources": [
+    {
+      "kind": "pod",
+      "name": "shuttle",
+      "expected": {
+        "metadata": {
+          "labels": {
+            "team": "bridge"
+          }
+        }
+      },
+      "state": "pod"
+    },
+    {
+      "kind": "ciliumnetworkpolicy",
+      "name": "allow-bridge-team",
+      "expected": {
+        "apiVersion": "cilium.io/v2",
+        "kind": "CiliumNetworkPolicy",
+        "metadata": {
+          "name": "allow-bridge-team",
+          "namespace": "starfleet"
+        },
+        "spec": {
+          "endpointSelector": {
+            "matchLabels": {
+              "app": "probe"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "behavior": [
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "starfleet",
+        "exec",
+        "shuttle",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; print(urllib.request.urlopen('http://probe:8080/',timeout=4).read().decode())"
+      ],
+      "contains": [
+        "probe-ready"
+      ]
+    },
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "outpost",
+        "exec",
+        "drifter",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; urllib.request.urlopen('http://probe.starfleet.svc:8080/',timeout=3).read()"
+      ],
+      "denied": true,
+      "failure_markers": [
+        "timed out"
+      ]
+    }
+  ],
+  "context": "kind-astro-ats-053-lab-020-02-01"
+}

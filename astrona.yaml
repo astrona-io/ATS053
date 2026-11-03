@@ -1,8 +1,8 @@
+---
 training:
   id: ATS053
   title: 'CCA: Network Policy'
-  description: 'Detailed reading material and reusable YAML knowledge checks for CCA:
-    Network Policy. Technical content remains draft. Private playgrounds and draft independent labs are included.'
+  description: 'Detailed reading material and reusable YAML knowledge checks for CCA: Network Policy. Technical content remains draft. Private playgrounds and draft independent labs are included.'
   certification:
     name: Cilium Certified Associate
     code: CCA
@@ -34,19 +34,24 @@ modules:
     path: sections/intro/course-03-how-this-course-is-made.md
 - id: module-010
   title: Interpret Cilium Network Polices and Intent
-  description: Developed reading and reasoning for Interpret Cilium Network Polices
-    and Intent.
-  maturity: alpha
+  description: Developed reading and reasoning for Interpret Cilium Network Polices and Intent.
+  status: alpha
   content:
   - type: reading
     title: Interpret Cilium Network Polices and Intent
     path: sections/section-010/README.md
   - type: reading
-    title: Interpreting A Cilium Policy As A Communication Contract
+    title: Reading A CiliumNetworkPolicy
     path: sections/section-010/module-01/course.md
   - type: reading
-    title: Interpreting A Cilium Policy As A Communication Contract
+    title: The Subject And The Direction
     path: sections/section-010/module-01/course-01-interpreting-a-cilium-policy-as-a-communication-contract.md
+  - type: reading
+    title: Peers, Ports And How Rules Combine
+    path: sections/section-010/module-01/course-02-peers-ports-and-combination.md
+  - type: reading
+    title: Apply And Test An Ingress Policy
+    path: sections/section-010/module-01/course-03-guided-practice.md
   - type: reading
     title: Enforce An Endpoint Selected Policy — Task
     path: sections/section-010/module-01/labs/lab-01/question.md
@@ -66,26 +71,80 @@ modules:
     title: Enforce An Endpoint Selected Policy — Solution
     path: sections/section-010/module-01/labs/lab-01/solution.md
   - type: reading
-    title: 'Guided Practice: Enforce An Endpoint Selected Policy'
-    path: sections/section-010/module-01/course-02-guided-practice.md
+    title: Summary
+    path: sections/section-010/module-01/course-04-summary.md
+  - type: reading
+    title: Effective Policy, Dependencies And Evidence
+    path: sections/section-010/module-02/course.md
+  - type: reading
+    title: Egress Dependencies And DNS
+    path: sections/section-010/module-02/course-01-egress-dependencies-and-dns.md
+  - type: reading
+    title: Limit Egress And Keep DNS Working — Task
+    path: sections/section-010/module-02/labs/lab-01/question.md
+  - type: lab
+    title: Limit Egress And Keep DNS Working
+    path: sections/section-010/module-02/labs/lab-01
+    difficulty: intermediate
+    estimated_duration: 25m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - The `shuttle` pod in `starfleet` may only call the `probe` Service. It must not reach anything else.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: Limit Egress And Keep DNS Working — Solution
+    path: sections/section-010/module-02/labs/lab-01/solution.md
+  - type: reading
+    title: Effective Policy And Evidence
+    path: sections/section-010/module-02/course-02-effective-policy-and-evidence.md
   - type: reading
     title: Summary
-    path: sections/section-010/module-01/course-03-summary.md
+    path: sections/section-010/module-02/course-03-summary.md
+  - type: reading
+    title: 'Capstone: Write The Contract For Both Directions — Task'
+    path: sections/section-010/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Write The Contract For Both Directions
+    path: sections/section-010/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 40m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - The `probe` Service must accept requests only from `shuttle`. The `shuttle` pod may only call the `probe` Service and use DNS.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: 'Capstone: Write The Contract For Both Directions — Solution'
+    path: sections/section-010/capstone/labs/lab-01/solution.md
+  - type: quiz
+    title: 'Knowledge Check: Interpret Cilium Network Polices and Intent'
+    path: sections/section-010/quiz.yaml
+    pass_score: 70
 - id: module-020
   title: Understand Cilium's Identity-based Network Security Model
-  description: Developed reading and reasoning for Understand Cilium's Identity-based
-    Network Security Model.
-  maturity: alpha
+  description: Developed reading and reasoning for Understand Cilium's Identity-based Network Security Model.
+  status: alpha
   content:
   - type: reading
     title: Understand Cilium's Identity-based Network Security Model
     path: sections/section-020/README.md
   - type: reading
-    title: Security Identities, Labels And Address Independence
+    title: Security Identities And Labels
     path: sections/section-020/module-01/course.md
   - type: reading
-    title: Security Identities, Labels And Address Independence
+    title: Why Identity Replaces The IP Address
     path: sections/section-020/module-01/course-01-security-identities-labels-and-address-independence.md
+  - type: reading
+    title: How Labels Become An Identity
+    path: sections/section-020/module-01/course-02-how-labels-become-an-identity.md
+  - type: reading
+    title: Reading And Changing An Endpoint Identity
+    path: sections/section-020/module-01/course-03-guided-practice.md
   - type: reading
     title: Read An Endpoint Security Identity — Task
     path: sections/section-020/module-01/labs/lab-01/question.md
@@ -105,25 +164,80 @@ modules:
     title: Read An Endpoint Security Identity — Solution
     path: sections/section-020/module-01/labs/lab-01/solution.md
   - type: reading
-    title: 'Guided Practice: Read An Endpoint Security Identity'
-    path: sections/section-020/module-01/course-02-guided-practice.md
+    title: Summary
+    path: sections/section-020/module-01/course-04-summary.md
+  - type: reading
+    title: Reserved Identities, Entities And CIDR
+    path: sections/section-020/module-02/course.md
+  - type: reading
+    title: Selecting Peers Across Namespaces
+    path: sections/section-020/module-02/course-01-selecting-peers-across-namespaces.md
+  - type: reading
+    title: Select Peers By Label Identity — Task
+    path: sections/section-020/module-02/labs/lab-01/question.md
+  - type: lab
+    title: Select Peers By Label Identity
+    path: sections/section-020/module-02/labs/lab-01
+    difficulty: intermediate
+    estimated_duration: 25m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - Only pods that carry the label `team=bridge` may call the `probe` Service. The `shuttle` pod must get that label.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: Select Peers By Label Identity — Solution
+    path: sections/section-020/module-02/labs/lab-01/solution.md
+  - type: reading
+    title: Reserved Identities, Entities And CIDR
+    path: sections/section-020/module-02/course-02-reserved-identities-entities-and-cidr.md
   - type: reading
     title: Summary
-    path: sections/section-020/module-01/course-03-summary.md
+    path: sections/section-020/module-02/course-03-summary.md
+  - type: reading
+    title: 'Capstone: Grant Access By Identity Across Namespaces — Task'
+    path: sections/section-020/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Grant Access By Identity Across Namespaces
+    path: sections/section-020/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 40m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - Every pod with the label `team=bridge` in any namespace may call the `probe` Service. The `intruder` pod in `outpost` must stay blocked.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: 'Capstone: Grant Access By Identity Across Namespaces — Solution'
+    path: sections/section-020/capstone/labs/lab-01/solution.md
+  - type: quiz
+    title: 'Knowledge Check: Understand Cilium''s Identity-based Network Security Model'
+    path: sections/section-020/quiz.yaml
+    pass_score: 70
 - id: module-030
   title: Policy Enforcement Modes
   description: Developed reading and reasoning for Policy Enforcement Modes.
-  maturity: alpha
+  status: alpha
   content:
   - type: reading
     title: Policy Enforcement Modes
     path: sections/section-030/README.md
   - type: reading
-    title: Default, Always And Never Policy Enforcement
+    title: Default, Always And Never Enforcement
     path: sections/section-030/module-01/course.md
   - type: reading
-    title: Default, Always And Never Policy Enforcement
+    title: The Three Enforcement Modes
     path: sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  - type: reading
+    title: Reading And Changing The Mode
+    path: sections/section-030/module-01/course-02-reading-and-changing-the-mode.md
+  - type: reading
+    title: Apply A Policy And Check The Enforcement State
+    path: sections/section-030/module-01/course-03-guided-practice.md
   - type: reading
     title: Observe Default Enforcement On Selected Endpoints — Task
     path: sections/section-030/module-01/labs/lab-01/question.md
@@ -143,25 +257,80 @@ modules:
     title: Observe Default Enforcement On Selected Endpoints — Solution
     path: sections/section-030/module-01/labs/lab-01/solution.md
   - type: reading
-    title: 'Guided Practice: Observe Default Enforcement On Selected Endpoints'
-    path: sections/section-030/module-01/course-02-guided-practice.md
+    title: Summary
+    path: sections/section-030/module-01/course-04-summary.md
+  - type: reading
+    title: Audit Mode And Safe Rollout
+    path: sections/section-030/module-02/course.md
+  - type: reading
+    title: Audit Mode
+    path: sections/section-030/module-02/course-01-audit-mode.md
+  - type: reading
+    title: Default Deny Control And Rollout
+    path: sections/section-030/module-02/course-02-default-deny-control-and-rollout.md
+  - type: reading
+    title: Add A Rule Without Enabling Default Deny — Task
+    path: sections/section-030/module-02/labs/lab-01/question.md
+  - type: lab
+    title: Add A Rule Without Enabling Default Deny
+    path: sections/section-030/module-02/labs/lab-01
+    difficulty: intermediate
+    estimated_duration: 25m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - The team wants to roll out an allow rule for the `probe` Service in steps. The first step must not block any client.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: Add A Rule Without Enabling Default Deny — Solution
+    path: sections/section-030/module-02/labs/lab-01/solution.md
   - type: reading
     title: Summary
-    path: sections/section-030/module-01/course-03-summary.md
+    path: sections/section-030/module-02/course-03-summary.md
+  - type: reading
+    title: 'Capstone: Enforce One Direction Only — Task'
+    path: sections/section-030/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Enforce One Direction Only
+    path: sections/section-030/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 40m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - The `probe` pods must not open connections to anything except DNS. Clients must still be able to call the `probe` Service.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: 'Capstone: Enforce One Direction Only — Solution'
+    path: sections/section-030/capstone/labs/lab-01/solution.md
+  - type: quiz
+    title: 'Knowledge Check: Policy Enforcement Modes'
+    path: sections/section-030/quiz.yaml
+    pass_score: 70
 - id: module-040
   title: Policy Rule Structure
   description: Developed reading and reasoning for Policy Rule Structure.
-  maturity: alpha
+  status: alpha
   content:
   - type: reading
     title: Policy Rule Structure
     path: sections/section-040/README.md
   - type: reading
-    title: Selectors, Peers, Ports And Application Rules
+    title: Selectors, Peers And Ports
     path: sections/section-040/module-01/course.md
   - type: reading
-    title: Selectors, Peers, Ports And Application Rules
-    path: sections/section-040/module-01/course-01-selectors-peers-ports-and-application-rules.md
+    title: Policy Anatomy And Peer Selectors
+    path: sections/section-040/module-01/course-01-policy-anatomy-and-peer-selectors.md
+  - type: reading
+    title: Ports And Rule Combination
+    path: sections/section-040/module-01/course-02-ports-and-rule-combination.md
+  - type: reading
+    title: Apply And Test A Port-Scoped Policy
+    path: sections/section-040/module-01/course-03-guided-practice.md
   - type: reading
     title: Apply A Port Scoped Cilium Rule — Task
     path: sections/section-040/module-01/labs/lab-01/question.md
@@ -181,11 +350,20 @@ modules:
     title: Apply A Port Scoped Cilium Rule — Solution
     path: sections/section-040/module-01/labs/lab-01/solution.md
   - type: reading
+    title: Summary
+    path: sections/section-040/module-01/course-04-summary.md
+  - type: reading
+    title: Application, DNS And Deny Rules
+    path: sections/section-040/module-02/course.md
+  - type: reading
+    title: HTTP And DNS Rules
+    path: sections/section-040/module-02/course-01-http-and-dns-rules.md
+  - type: reading
     title: Restrict A Request By HTTP Path — Task
-    path: sections/section-040/module-01/labs/lab-02/question.md
+    path: sections/section-040/module-02/labs/lab-01/question.md
   - type: lab
     title: Restrict A Request By HTTP Path
-    path: sections/section-040/module-01/labs/lab-02
+    path: sections/section-040/module-02/labs/lab-01
     difficulty: intermediate
     estimated_duration: 25m
     topic: cilium-l7-policy
@@ -197,28 +375,55 @@ modules:
     - cilium-l7-policy
   - type: reading
     title: Restrict A Request By HTTP Path — Solution
-    path: sections/section-040/module-01/labs/lab-02/solution.md
+    path: sections/section-040/module-02/labs/lab-01/solution.md
   - type: reading
-    title: 'Guided Practice: Apply A Port Scoped Cilium Rule'
-    path: sections/section-040/module-01/course-02-guided-practice.md
+    title: Deny Rules And Precedence
+    path: sections/section-040/module-02/course-02-deny-rules-and-precedence.md
   - type: reading
     title: Summary
-    path: sections/section-040/module-01/course-03-summary.md
+    path: sections/section-040/module-02/course-03-summary.md
+  - type: reading
+    title: 'Capstone: Combine An Entity Allow With A Deny Rule — Task'
+    path: sections/section-040/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Combine An Entity Allow With A Deny Rule
+    path: sections/section-040/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 40m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - Everything inside the cluster may call the `probe` Service on port 8080, except the `drifter` pod in `outpost`.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: 'Capstone: Combine An Entity Allow With A Deny Rule — Solution'
+    path: sections/section-040/capstone/labs/lab-01/solution.md
+  - type: quiz
+    title: 'Knowledge Check: Policy Rule Structure'
+    path: sections/section-040/quiz.yaml
+    pass_score: 70
 - id: module-050
   title: Kubernetes Network Policies versus Cilium Network Policies
-  description: Developed reading and reasoning for Kubernetes Network Policies versus
-    Cilium Network Policies.
-  maturity: alpha
+  description: Developed reading and reasoning for Kubernetes Network Policies versus Cilium Network Policies.
+  status: alpha
   content:
   - type: reading
     title: Kubernetes Network Policies versus Cilium Network Policies
     path: sections/section-050/README.md
   - type: reading
-    title: Kubernetes NetworkPolicy And Cilium Extensions
+    title: Kubernetes NetworkPolicy Semantics On Cilium
     path: sections/section-050/module-01/course.md
   - type: reading
-    title: Kubernetes NetworkPolicy And Cilium Extensions
-    path: sections/section-050/module-01/course-01-kubernetes-networkpolicy-and-cilium-extensions.md
+    title: The NetworkPolicy API
+    path: sections/section-050/module-01/course-01-the-networkpolicy-api.md
+  - type: reading
+    title: How Cilium Enforces NetworkPolicy
+    path: sections/section-050/module-01/course-02-how-cilium-enforces-networkpolicy.md
+  - type: reading
+    title: Apply And Check A Kubernetes NetworkPolicy
+    path: sections/section-050/module-01/course-03-guided-practice.md
   - type: reading
     title: Enforce A Standard Kubernetes Policy — Task
     path: sections/section-050/module-01/labs/lab-01/question.md
@@ -238,8 +443,61 @@ modules:
     title: Enforce A Standard Kubernetes Policy — Solution
     path: sections/section-050/module-01/labs/lab-01/solution.md
   - type: reading
-    title: 'Guided Practice: Enforce A Standard Kubernetes Policy'
-    path: sections/section-050/module-01/course-02-guided-practice.md
+    title: Summary
+    path: sections/section-050/module-01/course-04-summary.md
+  - type: reading
+    title: Cilium Extensions And Choosing Between Policy Kinds
+    path: sections/section-050/module-02/course.md
+  - type: reading
+    title: Cilium Extensions And Scope
+    path: sections/section-050/module-02/course-01-cilium-extensions-and-scope.md
+  - type: reading
+    title: Combine A NetworkPolicy With A CiliumNetworkPolicy — Task
+    path: sections/section-050/module-02/labs/lab-01/question.md
+  - type: lab
+    title: Combine A NetworkPolicy With A CiliumNetworkPolicy
+    path: sections/section-050/module-02/labs/lab-01
+    difficulty: intermediate
+    estimated_duration: 25m
+    topic: kubernetes-policy
+    task_kind: build
+    learning_goals:
+    - A standard NetworkPolicy already protects the `probe` Service and allows only `shuttle`. The `drifter` pod in `outpost` now also needs access. You must not edit or delete the NetworkPolicy.
+    tags:
+    - cca
+    - kubernetes-policy
+  - type: reading
+    title: Combine A NetworkPolicy With A CiliumNetworkPolicy — Solution
+    path: sections/section-050/module-02/labs/lab-01/solution.md
+  - type: reading
+    title: Choosing A Policy Kind And Migrating
+    path: sections/section-050/module-02/course-02-choosing-a-policy-kind-and-migrating.md
   - type: reading
     title: Summary
-    path: sections/section-050/module-01/course-03-summary.md
+    path: sections/section-050/module-02/course-03-summary.md
+  - type: reading
+    title: 'Capstone: Block One Client Without Editing The NetworkPolicy — Task'
+    path: sections/section-050/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Block One Client Without Editing The NetworkPolicy
+    path: sections/section-050/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 40m
+    topic: cilium-policy
+    task_kind: build
+    learning_goals:
+    - A standard NetworkPolicy already lets `shuttle` and every pod in `outpost` call the `probe` Service. The `intruder` pod in `outpost` must now be blocked. The owner of the NetworkPolicy does not allow edits.
+    tags:
+    - cca
+    - cilium-policy
+  - type: reading
+    title: 'Capstone: Block One Client Without Editing The NetworkPolicy — Solution'
+    path: sections/section-050/capstone/labs/lab-01/solution.md
+  - type: quiz
+    title: 'Knowledge Check: Kubernetes Network Policies versus Cilium Network Policies'
+    path: sections/section-050/quiz.yaml
+    pass_score: 70
+  - type: quiz
+    title: 'Final Domain Quiz: Network Policy'
+    path: sections/final-domain-quiz.yaml
+    pass_score: 70

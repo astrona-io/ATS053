@@ -1,0 +1,16 @@
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: allow-bridge-team-everywhere
+spec:
+  endpointSelector:
+    matchLabels:
+      app: probe
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        team: bridge
+    toPorts:
+    - ports:
+      - port: "8080"
+        protocol: TCP

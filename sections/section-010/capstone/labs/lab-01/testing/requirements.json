@@ -1,0 +1,95 @@
+{
+  "resources": [
+    {
+      "kind": "ciliumnetworkpolicy",
+      "name": "probe-ingress",
+      "expected": {
+        "apiVersion": "cilium.io/v2",
+        "kind": "CiliumNetworkPolicy",
+        "metadata": {
+          "name": "probe-ingress",
+          "namespace": "starfleet"
+        },
+        "spec": {
+          "endpointSelector": {
+            "matchLabels": {
+              "app": "probe"
+            }
+          }
+        }
+      }
+    },
+    {
+      "kind": "ciliumnetworkpolicy",
+      "name": "shuttle-egress",
+      "expected": {
+        "apiVersion": "cilium.io/v2",
+        "kind": "CiliumNetworkPolicy",
+        "metadata": {
+          "name": "shuttle-egress",
+          "namespace": "starfleet"
+        },
+        "spec": {
+          "endpointSelector": {
+            "matchLabels": {
+              "app": "shuttle"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "behavior": [
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "starfleet",
+        "exec",
+        "shuttle",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; print(urllib.request.urlopen('http://probe:8080/',timeout=4).read().decode())"
+      ],
+      "contains": [
+        "probe-ready"
+      ]
+    },
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "outpost",
+        "exec",
+        "drifter",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; urllib.request.urlopen('http://probe.starfleet.svc:8080/',timeout=3).read()"
+      ],
+      "denied": true,
+      "failure_markers": [
+        "timed out"
+      ]
+    },
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "starfleet",
+        "exec",
+        "shuttle",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; urllib.request.urlopen('http://kubernetes.default.svc:443/',timeout=3).read()"
+      ],
+      "denied": true,
+      "failure_markers": [
+        "timed out"
+      ]
+    }
+  ],
+  "context": "kind-astro-ats-053-capstone-010-01"
+}

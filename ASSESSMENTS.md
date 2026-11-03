@@ -29,3 +29,16 @@ ID, not display position, so a later renderer can shuffle choices safely.
 
 The banks contain answer keys and are public learning material, so this is not
 a secure examination bank. Do not treat scores as an official CCA result.
+
+## Hands-On Coverage
+
+This course has 5 ungraded playgrounds and 6 independent draft labs. Tasks, launch entries and solutions follow their teaching reading. Guided practice precedes the summary. Static and offline checks are separate from live execution, which remains pending.
+
+| Module | Labs in reading order |
+| --- | --- |
+| 010/01 | Enforce An Endpoint Selected Policy |
+| 020/01 | Read An Endpoint Security Identity |
+| 030/01 | Observe Default Enforcement On Selected Endpoints |
+| 040/01 | Apply A Port Scoped Cilium Rule |
+| 040/01 | Restrict A Request By HTTP Path |
+| 050/01 | Enforce A Standard Kubernetes Policy |

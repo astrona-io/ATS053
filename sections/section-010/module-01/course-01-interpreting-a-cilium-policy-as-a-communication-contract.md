@@ -3,65 +3,88 @@ draft: true
 exam_objectives:
 - Interpret Cilium Network Polices and Intent
 ---
-# Interpreting A Cilium Policy As A Communication Contract
+# The Subject And The Direction
 
-Reading a Cilium policy means translating its fields into a communication contract. The contract has a subject, a direction, peers and protocol constraints. A correct interpretation also considers the enforcement mode and other applicable policies. Looking at one familiar allow entry is insufficient to establish the effective relationship.
+Every Cilium policy answers two questions before it answers anything else. Which endpoints does the policy apply to, and for which direction of traffic? If you misread either answer, you will misread every rule below it. This part teaches how to find both answers in the YAML.
 
-## Identify The Subject First
+An endpoint is the Cilium name for a network interface of a pod, together with its labels and its security identity. In Kubernetes, one pod normally has one endpoint. The Cilium agent, a program that runs on every node as the DaemonSet `cilium` in `kube-system`, creates the endpoint when the pod starts. The agent also loads the policy rules for that endpoint into the Linux kernel.
 
-The endpointSelector identifies the endpoints governed by a workload policy. Ingress describes traffic arriving at those endpoints, while egress describes traffic leaving them. A selector for checkout does not automatically mean checkout is the remote peer; its position in the rule determines its role.
+## A first policy
 
-Namespace scope and label meaning affect the selected population. A namespaced CiliumNetworkPolicy and a cluster-wide policy can have different scope. Inspect the actual endpoint labels and the resource's context rather than infer selection from an application name in a comment. A policy that selects no intended endpoints cannot protect them merely because its title sounds correct.
-
-## Combine Constraints Within A Relationship
-
-A rule can describe peers through endpoint selectors, entities or supported address-related mechanisms. Port and protocol constraints narrow the relationship. Layer 7 rules can further constrain a supported application operation, such as an HTTP method or path, through the appropriate proxy path.
-
-For example, allowing a checkout endpoint to reach selected database endpoints on a particular TCP port does not grant access to every port at those peers. Adding an HTTP constraint is meaningful only for traffic and a feature path that can interpret that protocol. Network permission also does not provide the database credentials or business authorization required by the application.
-
-## Read The Effective Policy Set
-
-Allowed relationships can combine across applicable policies. A broad allow can therefore defeat the narrow intent of another allow-only rule by adding more permitted traffic. Review the union of allowed relationships rather than assume the most restrictive-looking document wins automatically.
-
-Cilium also supports explicit deny rules in its extended policy model. An applicable deny takes precedence over allow. This differs from treating policies as a simple ordered firewall file where the last line replaces earlier state. Check the selected endpoint, direction and matching deny relationship before explaining a rejected flow.
-
-## Include Necessary Dependencies
-
-An application may need DNS before reaching a named dependency. Allowing the dependency's application port while denying DNS can leave the request unable to determine an address. Observability, authentication and other runtime dependencies can also require narrow communication relationships. The solution is an explicit justified dependency, not an unrestricted egress exception added without analysis.
-
-FQDN-aware policy relies on supported DNS observation and address handling. A name in application configuration does not automatically become a permanent network identity. Address changes, DNS responses and supported policy behavior need review. Preserve the difference between a logical hostname and the actual endpoint or external address currently used.
-
-## Confirm Realization And Behavior
-
-Kubernetes accepting the policy confirms storage and validation within its contract. The agent must still select endpoints and realize the relevant policy state. An allowed flow can then fail because routing, destination readiness or application authorization is broken. Use endpoint and flow evidence to identify the policy decision, and application evidence to assess useful service.
-
-Interpret policy intent as a precise bounded relationship, then compare it with effective enforcement. That avoids broad changes based on a timeout whose cause has not been established.
-
-## A Bounded Egress Declaration
+Look at this policy before reading the rules. It is a complete CiliumNetworkPolicy. The API version `cilium.io/v2` and the kind `CiliumNetworkPolicy` tell the Kubernetes API server which custom resource definition to use.
 
 ```yaml
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: checkout-to-database
-  namespace: shop
+  name: probe-from-shuttle
+  namespace: starfleet
 spec:
   endpointSelector:
     matchLabels:
-      app: checkout
-  egress:
-  - toEndpoints:
+      app: probe
+  ingress:
+  - fromEndpoints:
     - matchLabels:
-        app: database
+        app: shuttle
     toPorts:
     - ports:
-      - port: "5432"
+      - port: "8080"
         protocol: TCP
 ```
 
-This illustrative resource governs checkout endpoints in shop and permits the supported selected database relationship. It omits separate DNS and other dependencies, so it is not a complete application policy. The effective result still includes other applicable policies and the active enforcement mode.
+Read it from the top. The policy lives in the namespace `starfleet`. It applies to endpoints that carry the label `app: probe`. It has an `ingress` section, so it describes traffic that arrives at those endpoints. The one ingress rule allows connections from endpoints labelled `app: shuttle`, and only to TCP port 8080.
+
+## The endpointSelector names the subject
+
+The `endpointSelector` field selects the endpoints that the policy governs. This group is the subject of the policy. Its syntax is the standard Kubernetes label selector, so it supports `matchLabels` and `matchExpressions`.
+
+The selector never names the other side of a connection. In the policy above, `app: probe` is the subject. The endpoints with `app: shuttle` are the peer. People often mix these two up, because both are written as labels. The position in the YAML decides the role: the `endpointSelector` is the subject, and a selector inside `fromEndpoints` or `toEndpoints` is the peer.
+
+A namespaced CiliumNetworkPolicy can only select endpoints in its own namespace. Kubernetes does not allow a namespace in the `endpointSelector`, because that would let one namespace change the traffic of another. An empty selector, written `endpointSelector: {}`, selects every endpoint in the namespace of the policy.
+
+## Direction: ingress and egress
+
+Direction is always described from the point of view of the subject. `ingress` lists rules for traffic that enters the subject. `egress` lists rules for traffic that leaves the subject. A rule that has neither section has no effect.
+
+```mermaid
+flowchart LR
+  S["shuttle"] -->|"egress of shuttle"| P["probe"]
+  S -.->|"ingress of probe"| P
+```
+
+The drawing shows one connection from `shuttle` to `probe`. The same packets are egress for `shuttle` and ingress for `probe`. A policy that selects `probe` and has an ingress section controls the connection at the `probe` side. A policy that selects `shuttle` and has an egress section controls it at the `shuttle` side.
+
+For a connection to work when both sides are selected, both policies must allow it. The `shuttle` egress policy must allow the destination, and the `probe` ingress policy must allow the source. If only one side has a policy, only that side is checked.
+
+## What selection changes
+
+An endpoint with no policy accepts and sends all traffic. When any policy with an ingress section selects an endpoint, the endpoint starts to drop all ingress traffic that no rule allows. This is called default deny. The same is true for egress, and it is decided separately for each direction.
+
+This means that the first policy on an endpoint changes its behaviour even if the policy contains an allow rule. In the policy above, `probe` now accepts `shuttle` on port 8080. It no longer accepts `drifter`, and it no longer accepts `shuttle` on any other port. The egress direction of `probe` is untouched, because the policy has no egress section.
+
+## Policy scope
+
+A CiliumNetworkPolicy applies in one namespace. A CiliumClusterwideNetworkPolicy has the same rule format but no namespace, so its `endpointSelector` can match endpoints in every namespace. Reading a policy therefore starts with the kind and the `metadata.namespace`. The same label selector means a different population in each kind.
+
+The Cilium agent also adds one label to every endpoint: the namespace of the pod, written `k8s:io.kubernetes.pod.namespace`. A peer selector without this label inside a namespaced policy matches endpoints only in the policy namespace. To name a peer in another namespace, the rule must contain the namespace label.
+
+## Checking the subject on a live cluster
+
+After the playground starts, point `kubectl` at it. The command below lists the endpoints that the `probe` policy selects. The label columns show which labels the pods carry, so you can compare them with the selector.
+
+<!-- astrona:playground:renew -->
+
+```sh
+export KUBECONFIG="$(astrona kubeconfig ats-053-playground-010-01)"
+kubectl -n starfleet get pods --show-labels
+```
+
+If a pod has no label that matches the `endpointSelector`, the policy does not govern it. A policy with a selector that matches nothing is valid YAML and the API server accepts it, but it protects nothing.
+
+This part gave you the two anchors of every policy: the subject and the direction. The next part reads what goes inside one rule, and how the parts of a rule combine.
 
 ## Common pitfalls
 
 > [!WARNING]
-> Selection and direction define the policy subject. Allowed policies combine, applicable denies take precedence, and network permission does not guarantee DNS, routing or application authorization.
+> The `endpointSelector` is the subject, not the peer. A selector that matches no pod protects nothing. The first policy with an ingress or egress section puts the selected endpoints into default deny for that direction only.

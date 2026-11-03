@@ -1,0 +1,13 @@
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: deny-intruder
+spec:
+  endpointSelector:
+    matchLabels:
+      app: probe
+  ingressDeny:
+  - fromEndpoints:
+    - matchLabels:
+        app: intruder
+        k8s:io.kubernetes.pod.namespace: outpost

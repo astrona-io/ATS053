@@ -1,0 +1,77 @@
+{
+  "resources": [
+    {
+      "kind": "networkpolicy",
+      "name": "probe-allow-starfleet",
+      "expected": {
+        "metadata": {
+          "name": "probe-allow-starfleet"
+        },
+        "spec": {
+          "podSelector": {
+            "matchLabels": {
+              "app": "probe"
+            }
+          },
+          "policyTypes": [
+            "Ingress"
+          ]
+        }
+      }
+    },
+    {
+      "kind": "ciliumnetworkpolicy",
+      "name": "allow-drifter",
+      "expected": {
+        "apiVersion": "cilium.io/v2",
+        "kind": "CiliumNetworkPolicy",
+        "metadata": {
+          "name": "allow-drifter",
+          "namespace": "starfleet"
+        },
+        "spec": {
+          "endpointSelector": {
+            "matchLabels": {
+              "app": "probe"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "behavior": [
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "starfleet",
+        "exec",
+        "shuttle",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; print(urllib.request.urlopen('http://probe:8080/',timeout=4).read().decode())"
+      ],
+      "contains": [
+        "probe-ready"
+      ]
+    },
+    {
+      "args": [
+        "kubectl",
+        "-n",
+        "outpost",
+        "exec",
+        "drifter",
+        "--",
+        "python",
+        "-c",
+        "import urllib.request; print(urllib.request.urlopen('http://probe.starfleet.svc:8080/',timeout=4).read().decode())"
+      ],
+      "contains": [
+        "probe-ready"
+      ]
+    }
+  ],
+  "context": "kind-astro-ats-053-lab-050-02-01"
+}

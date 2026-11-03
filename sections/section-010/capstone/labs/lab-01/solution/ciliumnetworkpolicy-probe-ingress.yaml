@@ -1,0 +1,17 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: probe-ingress
+  namespace: starfleet
+spec:
+  endpointSelector:
+    matchLabels:
+      app: probe
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: shuttle
+    toPorts:
+    - ports:
+      - port: "8080"
+        protocol: TCP

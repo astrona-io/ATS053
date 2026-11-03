@@ -1,0 +1,247 @@
+# Knowledge check for section 050. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats053-050
+course_id: ATS053
+exam_code: CCA
+status: draft
+provenance: Original practice material written for this course; not official exam
+  questions.
+scope:
+  type: section
+  id: section-050
+  title: Kubernetes Network Policies versus Cilium Network Policies
+questions:
+- id: ats053-050-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Know that NetworkPolicy has no deny
+  source_readings:
+  - sections/section-050/module-01/course-01-the-networkpolicy-api.md
+  prompt: Which statement about the Kubernetes NetworkPolicy API is correct?
+  options:
+  - id: a
+    text: It has deny rules with priorities.
+    explanation: It has neither.
+  - id: b
+    text: It has only allow rules, and policies add up.
+    explanation: Correct. The API has no deny rule and no rule order.
+  - id: c
+    text: It supports HTTP path rules.
+    explanation: It has no Layer 7 rules.
+  - id: d
+    text: It has cluster scope.
+    explanation: A NetworkPolicy is namespaced.
+  correct_option: b
+  explanation: The API has no deny rule and no rule order.
+- id: ats053-050-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Read selectors in one peer item
+  source_readings:
+  - sections/section-050/module-01/course-01-the-networkpolicy-api.md
+  prompt: 'A peer item has `namespaceSelector` for `outpost` and `podSelector` for
+    `app: drifter` together. What does it select?'
+  options:
+  - id: a
+    text: 'Pods with `app: drifter` in the namespace `outpost`.'
+    explanation: Correct. Both selectors in one item are joined with AND.
+  - id: b
+    text: Any pod in `outpost`, or any `drifter` pod in the policy namespace.
+    explanation: That is the meaning of two separate items.
+  - id: c
+    text: 'Any pod with `app: drifter` in every namespace.'
+    explanation: The namespace selector limits it.
+  - id: d
+    text: Only the namespace object.
+    explanation: The peers are pods.
+  correct_option: a
+  explanation: Both selectors in one item are joined with AND.
+- id: ats053-050-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Know the standard default deny
+  source_readings:
+  - sections/section-050/module-01/course-01-the-networkpolicy-api.md
+  prompt: Which NetworkPolicy denies all ingress to every pod of a namespace?
+  options:
+  - id: a
+    text: "`podSelector: {}` with `ingress: [{}]`."
+    explanation: An empty rule allows everything.
+  - id: b
+    text: No policy at all.
+    explanation: Without a policy, pods accept all traffic.
+  - id: c
+    text: "`policyTypes: [Egress]` only."
+    explanation: This covers egress.
+  - id: d
+    text: "`podSelector: {}` with `policyTypes: [Ingress]` and no `ingress` rules."
+    explanation: Correct. An empty selector selects all pods, and no rules allow nothing.
+  correct_option: d
+  explanation: An empty selector selects all pods, and no rules allow nothing.
+- id: ats053-050-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Know how ports are written in NetworkPolicy
+  source_readings:
+  - sections/section-050/module-01/course-01-the-networkpolicy-api.md
+  prompt: How is port 8080 written in a NetworkPolicy rule?
+  options:
+  - id: a
+    text: '`port: "8080"` is required.'
+    explanation: That is the Cilium form.
+  - id: b
+    text: "`port: 8080/TCP`"
+    explanation: The protocol is a separate field.
+  - id: c
+    text: "`port: 8080` as a number without quotes."
+    explanation: Correct. In a Cilium policy it is a string, and in a NetworkPolicy
+      it is a number or a name.
+  - id: d
+    text: "`ports: 8080`"
+    explanation: "`ports` is a list of entries."
+  correct_option: c
+  explanation: In a Cilium policy it is a string, and in a NetworkPolicy it is a number
+    or a name.
+- id: ats053-050-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain how Cilium enforces NetworkPolicy
+  source_readings:
+  - sections/section-050/module-01/course-02-how-cilium-enforces-networkpolicy.md
+  prompt: How does Cilium enforce a Kubernetes NetworkPolicy?
+  options:
+  - id: a
+    text: The Kubernetes API server enforces it.
+    explanation: The API server stores it only.
+  - id: b
+    text: Each agent translates it to its internal rules with identities and loads
+      them into the kernel.
+    explanation: Correct. The datapath uses the same flags and maps as for Cilium
+      policies.
+  - id: c
+    text: The kube-proxy component enforces it.
+    explanation: kube-proxy handles Service routing.
+  - id: d
+    text: It is ignored unless converted by hand.
+    explanation: Cilium supports it directly.
+  correct_option: b
+  explanation: The datapath uses the same flags and maps as for Cilium policies.
+- id: ats053-050-q06
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Combine policy kinds
+  source_readings:
+  - sections/section-050/module-01/course-02-how-cilium-enforces-networkpolicy.md
+  prompt: A NetworkPolicy allows `shuttle` to `probe` on 8080. A CiliumNetworkPolicy
+    allows `drifter` to `probe` on 8080. What is the allowed set?
+  options:
+  - id: a
+    text: Both `shuttle` and `drifter`, because allow rules of all kinds are joined
+      by union.
+    explanation: Correct. The agent computes one allowed set per direction.
+  - id: b
+    text: Only `shuttle`, because the NetworkPolicy came first.
+    explanation: Order does not matter.
+  - id: c
+    text: Only `drifter`, because Cilium kinds have priority.
+    explanation: There is no kind priority.
+  - id: d
+    text: Neither, because the policies conflict.
+    explanation: Allows do not conflict.
+  correct_option: a
+  explanation: The agent computes one allowed set per direction.
+- id: ats053-050-q07
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: List features the standard API lacks
+  source_readings:
+  - sections/section-050/module-01/course-02-how-cilium-enforces-networkpolicy.md
+  prompt: Which requirement cannot be written in a Kubernetes NetworkPolicy?
+  options:
+  - id: a
+    text: Allow ingress from a pod label on TCP 8080.
+    explanation: This is the basic case.
+  - id: b
+    text: Allow ingress from a namespace.
+    explanation: "`namespaceSelector` does this."
+  - id: c
+    text: Select pods of one namespace.
+    explanation: "`podSelector` does this."
+  - id: d
+    text: Allow only `GET /public` on port 8080.
+    explanation: Correct. The standard API has no Layer 7 rules.
+  correct_option: d
+  explanation: The standard API has no Layer 7 rules.
+- id: ats053-050-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Extend a NetworkPolicy without editing it
+  source_readings:
+  - sections/section-050/module-02/course-01-cilium-extensions-and-scope.md
+  prompt: A NetworkPolicy owned by another team allows `shuttle`. `drifter` needs
+    access, and the object must not change. What is the right step?
+  options:
+  - id: a
+    text: Delete the NetworkPolicy and write a new one.
+    explanation: This changes what the owner controls.
+  - id: b
+    text: Add a label to the NetworkPolicy.
+    explanation: Labels on the policy do not change its rules.
+  - id: c
+    text: Add a CiliumNetworkPolicy that selects the same pods and allows `drifter`.
+    explanation: Correct. The union adds the new allow without editing the old object.
+  - id: d
+    text: Edit the Service.
+    explanation: The Service does not hold policy.
+  correct_option: c
+  explanation: The union adds the new allow without editing the old object.
+- id: ats053-050-q09
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Block one client under a broad NetworkPolicy
+  source_readings:
+  - sections/section-050/module-02/course-01-cilium-extensions-and-scope.md
+  prompt: A NetworkPolicy allows everything in two namespaces to `probe`. One pod
+    must be blocked and the object must stay. Which resource does this?
+  options:
+  - id: a
+    text: A second NetworkPolicy that does not list the pod.
+    explanation: Allows only add up.
+  - id: b
+    text: A CiliumClusterwideNetworkPolicy with an `ingressDeny` rule for that pod.
+    explanation: Correct. Deny wins over every allow, and the clusterwide kind keeps
+      it out of team namespaces.
+  - id: c
+    text: An egress rule on the blocked pod only.
+    explanation: Ingress at `probe` is still allowed by the NetworkPolicy.
+  - id: d
+    text: A CiliumNetworkPolicy with `ingress` rules for other pods.
+    explanation: Allow rules cannot remove access.
+  correct_option: b
+  explanation: Deny wins over every allow, and the clusterwide kind keeps it out of
+    team namespaces.
+- id: ats053-050-q10
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Choose a kind and migrate safely
+  source_readings:
+  - sections/section-050/module-02/course-02-choosing-a-policy-kind-and-migrating.md
+  prompt: A team moves a rule from a NetworkPolicy to a Cilium policy. Which order
+    is safe?
+  options:
+  - id: a
+    text: Apply the new object, verify it, and remove the old object last.
+    explanation: Correct. The union only grows during the overlap, so there is no
+      gap.
+  - id: b
+    text: Remove the old object, then apply the new one.
+    explanation: There is a gap in which traffic is dropped.
+  - id: c
+    text: Apply the new object only in `audit` mode.
+    explanation: Audit mode does not replace verification.
+  - id: d
+    text: Edit the old object into the new kind.
+    explanation: A resource kind cannot be changed in place.
+  correct_option: a
+  explanation: The union only grows during the overlap, so there is no gap.

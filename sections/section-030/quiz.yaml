@@ -1,0 +1,252 @@
+# Knowledge check for section 030. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats053-030
+course_id: ATS053
+exam_code: CCA
+status: draft
+provenance: Original practice material written for this course; not official exam
+  questions.
+scope:
+  type: section
+  id: section-030
+  title: Policy Enforcement Modes
+questions:
+- id: ats053-030-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: State what default mode does to an unselected endpoint
+  source_readings:
+  - sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  prompt: In `default` enforcement mode, no policy selects the `probe` pods. What
+    do they accept?
+  options:
+  - id: a
+    text: Only traffic from the same namespace.
+    explanation: No such rule exists without a policy.
+  - id: b
+    text: All traffic in both directions.
+    explanation: Correct. Both enforcement flags are off until a policy selects the
+      endpoint.
+  - id: c
+    text: No traffic.
+    explanation: That is the behaviour of `always` mode.
+  - id: d
+    text: Only traffic on port 53.
+    explanation: DNS has no special rule in default mode.
+  correct_option: b
+  explanation: Both enforcement flags are off until a policy selects the endpoint.
+- id: ats053-030-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain per-direction enforcement
+  source_readings:
+  - sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  prompt: A policy selects `probe` and has only an `ingress` section. What about egress
+    from `probe`?
+  options:
+  - id: a
+    text: Egress stays open, because the policy turns on only the direction it has
+      a section for.
+    explanation: Correct. Each direction has its own flag.
+  - id: b
+    text: Egress is also in default deny.
+    explanation: The egress flag is unchanged.
+  - id: c
+    text: Egress is limited to the sources named in the ingress rule.
+    explanation: Ingress rules do not describe egress.
+  - id: d
+    text: Egress is blocked for 30 seconds.
+    explanation: There is no timer.
+  correct_option: a
+  explanation: Each direction has its own flag.
+- id: ats053-030-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Describe always mode
+  source_readings:
+  - sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  prompt: What does `always` mode do to an endpoint that no policy selects?
+  options:
+  - id: a
+    text: It allows all traffic.
+    explanation: That is the `never` mode behaviour for all endpoints.
+  - id: b
+    text: It allows only ingress.
+    explanation: Both directions are enforced.
+  - id: c
+    text: It ignores the endpoint.
+    explanation: Every endpoint is enforced.
+  - id: d
+    text: It puts the endpoint into default deny for both directions.
+    explanation: Correct. In `always` mode both flags are on for every endpoint.
+  correct_option: d
+  explanation: In `always` mode both flags are on for every endpoint.
+- id: ats053-030-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Describe never mode
+  source_readings:
+  - sections/section-030/module-01/course-01-default-always-and-never-policy-enforcement.md
+  prompt: A policy exists and has no effect on traffic. The cluster might run in which
+    mode?
+  options:
+  - id: a
+    text: "`always`, because it ignores policy objects."
+    explanation: "`always` enforces everywhere."
+  - id: b
+    text: "`default`, because default mode ignores new policies."
+    explanation: Default mode applies policies that select endpoints.
+  - id: c
+    text: "`never`, because policy is not applied in that mode."
+    explanation: Correct. The objects exist, but the agent does not enforce them.
+  - id: d
+    text: "`audit`, because audit mode deletes policies."
+    explanation: Audit mode does not delete anything.
+  correct_option: c
+  explanation: The objects exist, but the agent does not enforce them.
+- id: ats053-030-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Know where the mode is set
+  source_readings:
+  - sections/section-030/module-01/course-02-reading-and-changing-the-mode.md
+  prompt: How does an administrator change the enforcement mode of a running cluster?
+  options:
+  - id: a
+    text: Label the namespace with the mode name.
+    explanation: The mode is an agent setting.
+  - id: b
+    text: Set `policyEnforcementMode` in the Helm values (the agent setting `enable-policy`)
+      and restart the agent pods.
+    explanation: Correct. The agent reads the value at start.
+  - id: c
+    text: Annotate each policy with the mode.
+    explanation: The mode is global.
+  - id: d
+    text: Delete the CiliumIdentity resources.
+    explanation: This does not set a mode.
+  correct_option: b
+  explanation: The agent reads the value at start.
+- id: ats053-030-q06
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Predict effects of always mode
+  source_readings:
+  - sections/section-030/module-01/course-02-reading-and-changing-the-mode.md
+  prompt: After a cluster moves to `always` mode without any new policy, applications
+    report name resolution errors. Why?
+  options:
+  - id: a
+    text: The DNS service and its clients are in default deny and no rule allows the
+      lookups.
+    explanation: Correct. `always` mode needs a baseline of rules for DNS.
+  - id: b
+    text: "`always` mode removes the DNS service."
+    explanation: The DNS service keeps running.
+  - id: c
+    text: Names are no longer supported in Cilium.
+    explanation: Names work when allowed.
+  - id: d
+    text: The agent has not restarted.
+    explanation: A restart is needed to apply the mode, not to explain lookup failures
+      after it.
+  correct_option: a
+  explanation: "`always` mode needs a baseline of rules for DNS."
+- id: ats053-030-q07
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Describe audit mode
+  source_readings:
+  - sections/section-030/module-02/course-01-audit-mode.md
+  prompt: What does audit mode do with a flow that a policy would drop?
+  options:
+  - id: a
+    text: It drops the flow and reports it.
+    explanation: That is enforcement.
+  - id: b
+    text: It deletes the policy.
+    explanation: Policies are not changed.
+  - id: c
+    text: It encrypts the flow.
+    explanation: Audit mode has no effect on encryption.
+  - id: d
+    text: It allows the flow and reports it as an audit event.
+    explanation: Correct. Audit mode lets observers see missing rules before enforcement.
+  correct_option: d
+  explanation: Audit mode lets observers see missing rules before enforcement.
+- id: ats053-030-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Use the endpoint audit option
+  source_readings:
+  - sections/section-030/module-02/course-01-audit-mode.md
+  prompt: Which setting puts one endpoint into audit mode?
+  options:
+  - id: a
+    text: The label `audit=true` on the pod.
+    explanation: Labels do not set agent options.
+  - id: b
+    text: The field `audit` in the policy.
+    explanation: There is no such field.
+  - id: c
+    text: The endpoint option `PolicyAuditMode=Enabled`, set with `cilium-dbg endpoint
+      config`.
+    explanation: Correct. It applies to one endpoint and is lost when the endpoint
+      is recreated.
+  - id: d
+    text: 'The Helm value `policyEnforcementMode: audit`.'
+    explanation: Audit mode is not a value of that setting.
+  correct_option: c
+  explanation: It applies to one endpoint and is lost when the endpoint is recreated.
+- id: ats053-030-q09
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Use enableDefaultDeny in a rollout
+  source_readings:
+  - sections/section-030/module-02/course-02-default-deny-control-and-rollout.md
+  prompt: 'A policy has `enableDefaultDeny.ingress: false` and one ingress allow rule.
+    No other policy selects the pods. What about a request that the rule does not
+    allow?'
+  options:
+  - id: a
+    text: It is dropped, because ingress rules always enforce.
+    explanation: The field stops that effect.
+  - id: b
+    text: It is allowed, because the policy does not turn on default deny.
+    explanation: Correct. The rules are stored, and apply when another policy enforces
+      the same direction.
+  - id: c
+    text: It is dropped after 60 seconds.
+    explanation: There is no timer.
+  - id: d
+    text: It is rejected by the API server.
+    explanation: The object is valid.
+  correct_option: b
+  explanation: The rules are stored, and apply when another policy enforces the same
+    direction.
+- id: ats053-030-q10
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Plan a safe rollback
+  source_readings:
+  - sections/section-030/module-02/course-02-default-deny-control-and-rollout.md
+  prompt: A team deletes the only policy that enforces ingress on a workload during
+    a rollback. What is the result?
+  options:
+  - id: a
+    text: The ingress flag turns off and the workload accepts all ingress traffic.
+    explanation: Correct. Without a selecting policy with an ingress section, the
+      endpoint is open in default mode.
+  - id: b
+    text: The workload keeps default deny until the next restart.
+    explanation: The flag follows the policies.
+  - id: c
+    text: The workload accepts only DNS.
+    explanation: No such exception exists.
+  - id: d
+    text: The agent blocks the delete.
+    explanation: Deletes are allowed.
+  correct_option: a
+  explanation: Without a selecting policy with an ingress section, the endpoint is
+    open in default mode.
