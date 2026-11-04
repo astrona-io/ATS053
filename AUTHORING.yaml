@@ -53,7 +53,7 @@ sections:
       path: sections/section-010/module-01/labs/lab-01
       after_reading: sections/section-010/module-01/course-03-guided-practice.md
       objective: Permit the trusted client while denying the untrusted client.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings:
     - sections/section-010/module-01/course-03-guided-practice.md
@@ -77,7 +77,7 @@ sections:
       path: sections/section-010/module-02/labs/lab-01
       after_reading: sections/section-010/module-02/course-01-egress-dependencies-and-dns.md
       objective: The `shuttle` pod in `starfleet` may only call the `probe` Service. It must not reach anything else.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings: []
   capstone_lab: sections/section-010/capstone/labs/lab-01
@@ -112,7 +112,7 @@ sections:
       path: sections/section-020/module-01/labs/lab-01
       after_reading: sections/section-020/module-01/course-03-guided-practice.md
       objective: Relate endpoint labels to its numeric security identity.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings:
     - sections/section-020/module-01/course-03-guided-practice.md
@@ -136,7 +136,7 @@ sections:
       path: sections/section-020/module-02/labs/lab-01
       after_reading: sections/section-020/module-02/course-01-selecting-peers-across-namespaces.md
       objective: Only pods that carry the label `team=bridge` may call the `probe` Service. The `shuttle` pod must get that label.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings: []
   capstone_lab: sections/section-020/capstone/labs/lab-01
@@ -171,7 +171,7 @@ sections:
       path: sections/section-030/module-01/labs/lab-01
       after_reading: sections/section-030/module-01/course-03-guided-practice.md
       objective: Permit the trusted client while denying the untrusted client.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings:
     - sections/section-030/module-01/course-03-guided-practice.md
@@ -195,7 +195,7 @@ sections:
       path: sections/section-030/module-02/labs/lab-01
       after_reading: sections/section-030/module-02/course-02-default-deny-control-and-rollout.md
       objective: The team wants to roll out an allow rule for the `probe` Service in steps. The first step must not block any client.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings: []
   capstone_lab: sections/section-030/capstone/labs/lab-01
@@ -230,7 +230,7 @@ sections:
       path: sections/section-040/module-01/labs/lab-01
       after_reading: sections/section-040/module-01/course-03-guided-practice.md
       objective: Permit the trusted client while denying the untrusted client.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings:
     - sections/section-040/module-01/course-03-guided-practice.md
@@ -254,7 +254,7 @@ sections:
       path: sections/section-040/module-02/labs/lab-01
       after_reading: sections/section-040/module-02/course-01-http-and-dns-rules.md
       objective: Permit GET /public and reject GET /private from the same client.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings: []
   capstone_lab: sections/section-040/capstone/labs/lab-01
@@ -289,7 +289,7 @@ sections:
       path: sections/section-050/module-01/labs/lab-01
       after_reading: sections/section-050/module-01/course-03-guided-practice.md
       objective: Express the namespace boundary using standard NetworkPolicy.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings:
     - sections/section-050/module-01/course-03-guided-practice.md
@@ -313,7 +313,7 @@ sections:
       path: sections/section-050/module-02/labs/lab-01
       after_reading: sections/section-050/module-02/course-01-cilium-extensions-and-scope.md
       objective: A standard NetworkPolicy already protects the `probe` Service and allows only `shuttle`. The `drifter` pod in `outpost` now also needs access. You must not edit or delete the NetworkPolicy.
-      status: draft
+      status: alpha
       runtime_verification: pending
     practice_readings: []
   capstone_lab: sections/section-050/capstone/labs/lab-01
