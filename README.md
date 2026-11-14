@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://astrona.io/courses/cilium-certified-associate-cca">
+    <img src="https://astrona.io/courses/cilium-certified-associate-cca/domains/ATS053.svg" alt="ATS053: Network Policy, part of the Cilium Certified Associate course on Astrona" width="100%">
+  </a>
+</p>
+
 # Network Policy (ATS053)
 
 Cilium Certified Associate (CCA): Network Policy, worth 18% of the official curriculum. This course belongs to ATP011.
